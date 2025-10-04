@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>堤廉太郎 - Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">堤廉太郎</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Works</a></li>
+                <li><a href="statement.html">Statement</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Works Grid -->
+    <main class="works-container">
+        <div class="works-grid" id="worksGrid">
+            <!-- 作品はJavaScriptで動的に生成 -->
+        </div>
+    </main>
+
+    <script src="js/works-data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // 作品グリッドを生成
+        const worksGrid = document.getElementById('worksGrid');
+        const works = getAllWorks();
+
+        works.forEach(work => {
+            const workCard = document.createElement('a');
+            workCard.href = `work.html?id=${work.id}`;
+            workCard.className = 'work-card';
+            
+            workCard.innerHTML = `
+                <div class="work-card-image">
+                    <img src="${work.image}" alt="${work.title}" loading="lazy">
+                    ${work.videoPlaceholder ? '<div class="video-badge">Video</div>' : ''}
+                </div>
+                <div class="work-card-info">
+                    <h2 class="work-card-title">${work.title}</h2>
+                    <p class="work-card-category">${work.category}</p>
+                    <p class="work-card-philosophy">${work.philosophy}</p>
+                </div>
+            `;
+            
+            worksGrid.appendChild(workCard);
+        });
+    </script>
+</body>
+</html>
