@@ -3,55 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>堤廉太郎 - Portfolio</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Portfolio - Ren Atomo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "游ゴシック", "Yu Gothic", sans-serif;
+            color: #333;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Masonryスタイルのグリッド */
+        .works-mosaic {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 150px;
+            gap: 15px;
+            margin-bottom: 80px;
+        }
+        
+        .work {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+        
+        .work:hover {
+            transform: scale(0.98);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* hamon.exe - 大きく表示（左上） */
+        .work:nth-child(1) {
+            grid-column: 1 / span 2;
+            grid-row: 1 / span 3;
+        }
+        
+        /* There are me - 右上 */
+        .work:nth-child(2) {
+            grid-column: 3;
+            grid-row: 1;
+        }
+        
+        /* コラボ - 右上の縦長 */
+        .work:nth-child(3) {
+            grid-column: 4;
+            grid-row: 1 / span 2;
+        }
+        
+        /* TEDx - 右中段 */
+        .work:nth-child(4) {
+            grid-column: 3;
+            grid-row: 2;
+        }
+        
+        /* 音で遊ぶ会 - 右下段 */
+        .work:nth-child(5) {
+            grid-column: 3;
+            grid-row: 3;
+        }
+        
+        /* Unleash - 右下段 */
+        .work:nth-child(6) {
+            grid-column: 4;
+            grid-row: 3;
+        }
+        
+        /* Shibuya_No.01 - 下段の横長 */
+        .work:nth-child(7) {
+            grid-column: 1 / span 2;
+            grid-row: 4 / span 2;
+        }
+        
+        .work-image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .work-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .work-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 20px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .work:hover .work-overlay {
+            transform: translateY(0);
+        }
+        
+        .work-title {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .work:nth-child(1) .work-title,
+        .work:nth-child(7) .work-title {
+            font-size: 18px;
+        }
+        
+        .work-meta {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* 思想へのリンク */
+        .philosophy-link {
+            text-align: center;
+            margin-top: 100px;
+        }
+        
+        .philosophy-link a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .philosophy-link a:hover {
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 768px) {
+            .works-mosaic {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 120px;
+            }
+            
+            .work:nth-child(1),
+            .work:nth-child(7) {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+            
+            .work:nth-child(2),
+            .work:nth-child(3),
+            .work:nth-child(4),
+            .work:nth-child(5),
+            .work:nth-child(6) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="index.html" class="nav-logo">堤廉太郎</a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="active">Works</a></li>
-                <li><a href="statement.html">Statement</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Works Grid -->
-    <main class="works-container">
-        <div class="works-grid" id="worksGrid">
-            <!-- 作品はJavaScriptで動的に生成 -->
-        </div>
-    </main>
-
-    <script src="js/works-data.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        // 作品グリッドを生成
-        const worksGrid = document.getElementById('worksGrid');
-        const works = getAllWorks();
-
-        works.forEach(work => {
-            const workCard = document.createElement('a');
-            workCard.href = `work.html?id=${work.id}`;
-            workCard.className = 'work-card';
-            
-            workCard.innerHTML = `
-                <div class="work-card-image">
-                    <img src="${work.image}" alt="${work.title}" loading="lazy">
-                    ${work.videoPlaceholder ? '<div class="video-badge">Video</div>' : ''}
+    <div class="container">
+        <div class="works-mosaic">
+            <!-- hamon.exe - メイン（左上） -->
+            <div class="work" data-id="3">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/IMG_9995.jpg" alt="hamon.exe">
+                    <div class="work-overlay">
+                        <div class="work-title">hamon.exe</div>
+                        <div class="work-meta">cg · 2024-2025</div>
+                    </div>
                 </div>
-                <div class="work-card-info">
-                    <h2 class="work-card-title">${work.title}</h2>
-                    <p class="work-card-category">${work.category}</p>
-                    <p class="work-card-philosophy">${work.philosophy}</p>
-                </div>
-            `;
+            </div>
             
-            worksGrid.appendChild(workCard);
-        });
-    </script>
+            <!-- There are me（右上） -->
+            <div class="work" data-id="1">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/There_are_me.jpg" alt="There are me">
+                    <div class="work-overlay">
+                        <div class="work-title">There are me</div>
+                        <div class="work-meta">picture · 2024</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- コラボ（右上縦長） -->
+            <div class="work" data-id="4">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/image1.jpg" alt="hamon.exe × 勝川東さん">
+                    <div class="work-overlay">
+                        <div class="work-title">hamon.exe × 勝川東さん</div>
+                        <div class="work-meta">event · 2024</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TEDx（右中段） -->
+            <div class="work" data-id="5">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/tedxutokyo2025.jpeg" alt="TEDxUTokyo">
+                    <div class="work-overlay">
+                        <div class="work-title">TEDxUTokyo "でこぼこ"</div>
+                        <div class="work-meta">event · 2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 音で遊ぶ会（右下段） -->
+            <div class="work" data-id="6">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/play_sound.jpeg" alt="音で遊ぶ会">
+                    <div class="work-overlay">
+                        <div class="work-title">音で遊ぶ会</div>
+                        <div class="work-meta">vj · 2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Unleash（右下段） -->
+            <div class="work" data-id="7">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/unleash.jpg" alt="Unleash the Dream">
+                    <div class="work-overlay">
+                        <div class="work-title">Unleash the Dream 出演</div>
+                        <div class="work-meta">event · 2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shibuya_No.01 - サブメイン（下段） -->
+            <div class="work" data-id="2">
+                <div class="work-image">
+                    <img src="https://ren-atomo.github.io/about/image2.jpg" alt="Shibuya_No.01">
+                    <div class="work-overlay">
+                        <div class="work-title">Shibuya_No.01</div>
+                        <div class="work-meta">picture · 2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="philosophy-link">
+            <a href="#philosophy">思想について</a>
+        </div>
+    </div>
 </body>
 </html>
