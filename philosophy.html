@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思想 - 堤 廉太郎</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "游ゴシック", "Yu Gothic", sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 2;
+        }
+        
+        /* ヘッダー */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 20px 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            font-weight: normal;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            margin-left: 30px;
+            transition: opacity 0.3s ease;
+        }
+        
+        nav a:hover {
+            opacity: 0.6;
+        }
+        
+        /* メインコンテンツ */
+        .philosophy-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+        
+        .philosophy-title {
+            font-size: 32px;
+            font-weight: normal;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
+        }
+        
+        /* セクション */
+        .philosophy-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            letter-spacing: 0.05em;
+        }
+        
+        /* 本文スタイル */
+        .philosophy-text {
+            font-size: 15px;
+            line-height: 2.2;
+            color: #444;
+            text-align: justify;
+            margin-bottom: 25px;
+        }
+        
+        .philosophy-text.indent {
+            padding-left: 1em;
+        }
+        
+        .philosophy-text.emphasis {
+            font-weight: 500;
+            color: #222;
+            margin: 30px 0;
+        }
+        
+        /* リスト */
+        .concept-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .concept-list li {
+            list-style: none;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #444;
+        }
+        
+        .concept-list li::before {
+            content: '・';
+            position: absolute;
+            left: -15px;
+        }
+        
+        /* 引用風のブロック */
+        .thought-block {
+            background: #f8f8f8;
+            padding: 20px 25px;
+            margin: 30px 0;
+            border-left: 3px solid #ddd;
+            font-size: 14px;
+            line-height: 2;
+        }
+        
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        /* リンク */
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 0.6;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav {
+                margin-top: 10px;
+            }
+            
+            nav a {
+                margin-left: 0;
+                margin-right: 20px;
+                font-size: 13px;
+            }
+            
+            .philosophy-container {
+                padding: 100px 20px 60px;
+            }
+            
+            .philosophy-title {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .philosophy-text {
+                font-size: 14px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">堤 廉太郎</a>
+            <nav>
+                <a href="index.html#works">Works</a>
+                <a href="philosophy.html">Philosophy</a>
+                <a href="profile.html">Profile</a>
+                <a href="experiments.html">Experiments</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="philosophy-container">
+        <h1 class="philosophy-title">思想</h1>
+        
+        <div class="philosophy-section">
+            <p class="philosophy-text emphasis">
+                前提として、私は「良い」というものは絶対的なものとして定義できないと考えている。以下の文章は現時点での私の考えを述べたものであり、これからの私の思想や価値観を絶対化するものではない。
+            </p>
+            
+            <p class="philosophy-text emphasis">
+                私は「良い〇〇」を遺したい。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">矛盾との対峙</h2>
+            
+            <p class="philosophy-text">
+                これは、矛盾を孕んでいる。<br>
+                矛盾を自分の思想に内包することを拒絶しているわけではない。しかし、それを肯定することが無意識のうちに無限の後退・停滞へ向かっていないかという恐怖がある。
+            </p>
+            
+            <p class="philosophy-text">
+                これ自体を俯瞰した時に「生成的な緊張」だと捉えることは簡単だ。しかし、それによって無意識のうちに慢心してしまわないかという恐怖がそれをさせなくしている。
+            </p>
+            
+            <p class="philosophy-text">
+                作品を作るという行為自体が、その停滞から一歩先に進むためのプロセスなのかも知れない。<br>
+                →作品を作る、その状態を俯瞰する、その作品が起こす痕跡の表れを受け取る、それを思想の養分として落とし込む
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">「良い」という概念について</h2>
+            
+            <p class="philosophy-text">
+                「良い」というものは、社会の形によって変動する。しかし、その社会に内包される文化、技術、学問、生活などの価値観は、カオスなものとして独立して予測不可能に存在するのではない。それぞれが密接に絡まり合い、ある流れを持って変動している。だからこそ、その時代、その時々での「良い」は、ある程度予測可能である。
+            </p>
+            
+            <div class="thought-block">
+                現代アート（特にアースワーク）の考え方に近いかもしれない<br>
+                →「現代アートでは定着化しない空間や時間の概念まで捉えようとするために、最終的に作品がある決まった形体に落ち着くとは、言い切れなくなっている。偶然によって生まれた形体がそのまま作品になるなど、制作のプロセスや、状況まで含めて見せるようなパフォーマンス性の強い作品も登場している。」
+            </div>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">理解と孤独への恐怖</h2>
+            
+            <p class="philosophy-text">
+                僕は理解されないことに恐怖を感じている。<br>
+                テキストを書く時、常に「理解されないのではないか」「伝わらないんじゃないか」という恐怖がつきまとう。そして、理解してくれる人を失いたくない→孤独になりたくないという防衛意識も強い。
+            </p>
+            
+            <p class="philosophy-text">
+                けれど、「理解してほしい」「認めてほしい」という欲求は強い。ただ、「理解」は表面的なものではなく本質的なところでの理解を求めている。（これは、理想論に過ぎないと知りながら）だから、安易な理解を無意識的にも拒絶してしまう。
+            </p>
+            
+            <p class="philosophy-text">
+                社会の中で生き抜くための仮面の使い方は磨いてきたが、自分の本音を出しながら社会の中で生きるための戦略を考えなければならない。どこで、折り合いをつけるのか。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">現時点で考える「良い」</h2>
+            
+            <ul class="concept-list">
+                <li>人とご飯を食べること</li>
+                <li>人と建前を越えて関わること</li>
+                <li>意識感を変える→社会に対しての見え方が変わることで幸福感が変わる</li>
+                <li>幸福であること</li>
+                <li>幸福を求めること</li>
+                <li>想像すること</li>
+                <li>毒と薬→万物は使い方と量によって、毒にも薬にもなり得る</li>
+                <li>痕跡が残る・記憶が残る</li>
+            </ul>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">技術と思想</h2>
+            
+            <p class="philosophy-text">
+                いくら優れた技術を持っていても、それを扱う思想・哲学が欠けていては、その技術は人に危害を加える武器になりえる。反対に、いくら洗練・高度化された思想・哲学があったとしても、それに見合う技術を持っていなければ、外界に対して影響は与えられない。
+            </p>
+            
+            <p class="philosophy-text">
+                どちらか一方を注視するのではなく、どちらも常に磨き・見つめ直し・修正しなければならない。その為には、自分・外界・社会それぞれやそれらの関わり合いを客観視する術が必要になる。しかし、それに終始し無限の後退・停滞となる可能性も認識しなければならない。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">評価することの暴力性</h2>
+            
+            <p class="philosophy-text">
+                何かを評価するということは、評価対象に対して「理想の状態は〇〇である。」ということにもなり得る。それは、ポジティブなものでもネガティブなものでもだ。特に、自分より立場が上のもの・尊敬するものの評価は大きく影響させる。僕らは、評価することの暴力性を認識しなければならない。
+            </p>
+            
+            <p class="philosophy-text">
+                しかし、それだけでは人に愛を伝えられない。また、褒められることを人は次へ進む原動力にもしうる。相手が何を求めている・何と声をかければ先へ進めるかは、完全にはわからない。だけれども、考えることを放棄してはならない。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">食を通じた共有</h2>
+            
+            <p class="philosophy-text">
+                ご飯を食べると幸せになる。これは、いつでもそうだ。生物として、栄養を取らなければ死ぬ。だから、最低限の栄養は取らなければならない。しかし、その枠組み以上に「ご飯を食べる」ということに幸福を感じる。特に、それは他者と同じ食を共有するときに増幅される。
+            </p>
+            
+            <p class="philosophy-text">
+                だから、ぼくはみんなでカレーを作りたい。カレーを選ぶ理由はシンプルで、僕が好きなことと、キャッチーであることと、みんなで作るという点において簡単だからだ。しかし、カレーという形式に固執するつもりはない。その時その時で、必要な栄養素は違う。
+            </p>
+            
+            <p class="philosophy-text">
+                重要なのは、人と食を共有する幸福に気づかせ、それが派生していくことだ。僕のイベントに参加した誰かが、自分なりの食のイベントを始める。別の料理で、別の場所で、別のやり方で。この枠組みにこそ価値があると考える。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">作品を作るうえでの考え</h2>
+            
+            <ul class="concept-list">
+                <li>意識の変化によって、外界からの刺激から得る感情・感覚は変化し得る</li>
+                <li>人間は複雑な事象を理解するときに今まで得たパターンに当てはめようとする</li>
+                <li>言葉のシニフィアンとシニフィエは必然的に結びついたものではなく、シニフィアンを受け取った意識が経てきた経験によってある程度変化しえる</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html#works" class="back-link">作品一覧へ戻る</a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2024 堤 廉太郎</p>
+    </footer>
+</body>
+</html>

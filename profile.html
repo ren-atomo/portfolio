@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロフィール - 堤 廉太郎</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "游ゴシック", "Yu Gothic", sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.8;
+        }
+        
+        /* ヘッダー */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 20px 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            font-weight: normal;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            margin-left: 30px;
+            transition: opacity 0.3s ease;
+        }
+        
+        nav a:hover {
+            opacity: 0.6;
+        }
+        
+        /* プロフィールコンテナ */
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+        
+        /* プロフィールヘッダー */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .profile-name {
+            font-size: 36px;
+            font-weight: normal;
+            letter-spacing: 0.15em;
+            margin-bottom: 15px;
+        }
+        
+        .profile-name-en {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 0.08em;
+            margin-bottom: 30px;
+        }
+        
+        /* 基本情報 */
+        .profile-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .profile-info-item {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+        
+        .profile-info-label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        /* セクション */
+        .profile-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: normal;
+            letter-spacing: 0.08em;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* アーティストステートメント */
+        .artist-statement {
+            font-size: 15px;
+            line-height: 2.2;
+            color: #444;
+            text-align: justify;
+            background: #f8f8f8;
+            padding: 30px;
+            margin-bottom: 60px;
+        }
+        
+        /* 活動歴 */
+        .history {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .history::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            bottom: 10px;
+            width: 1px;
+            background: #e0e0e0;
+        }
+        
+        .history-item {
+            position: relative;
+            margin-bottom: 35px;
+        }
+        
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+        }
+        
+        .history-year {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        
+        .history-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .history-description {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #666;
+        }
+        
+        /* SNSリンク */
+        .social-links {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .social-link {
+            display: inline-block;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 20px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: #333;
+            color: white;
+        }
+        
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav {
+                margin-top: 10px;
+            }
+            
+            nav a {
+                margin-left: 0;
+                margin-right: 20px;
+                font-size: 13px;
+            }
+            
+            .profile-container {
+                padding: 100px 20px 60px;
+            }
+            
+            .profile-name {
+                font-size: 28px;
+            }
+            
+            .profile-info {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+            
+            .artist-statement {
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .history {
+                padding-left: 20px;
+            }
+            
+            .history::before {
+                left: 3px;
+            }
+            
+            .history-item::before {
+                left: -18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">堤 廉太郎</a>
+            <nav>
+                <a href="index.html#works">Works</a>
+                <a href="philosophy.html">Philosophy</a>
+                <a href="profile.html">Profile</a>
+                <a href="experiments.html">Experiments</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 class="profile-name">堤 廉太郎</h1>
+            <div class="profile-name-en">RENTARO TSUTSUMI</div>
+            
+            <div class="profile-info">
+                <div class="profile-info-item">
+                    <span class="profile-info-label">生年月日</span>
+                    <span>2007年12月18日</span>
+                </div>
+                <div class="profile-info-item">
+                    <span class="profile-info-label">年齢</span>
+                    <span id="age"></span>
+                </div>
+                <div class="profile-info-item">
+                    <span class="profile-info-label">所属</span>
+                    <span>芝浦工業大学附属中学高等学校 高校3年生</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="artist-statement">
+            <p>
+                技術と思想の交差点で、新たな関わり合いの形を模索している。<br><br>
+                プログラミングから始まった私の探求は、ビジネス、そしてアートへと展開してきた。それは単なる分野の移行ではなく、「人と人との本質的な関わり合い」を求める一貫した旅路である。<br><br>
+                言語を介さない対話、形式を超えた交流、そして意識の変容を通じた新たな認識。これらを作品として具現化し、観る者・体験する者との間に、既存の枠組みを超えた関係性を生み出すことを目指している。
+            </p>
+        </div>
+        
+        <div class="profile-section">
+            <h2 class="section-title">活動歴</h2>
+            
+            <div class="history">
+                <div class="history-item">
+                    <div class="history-year">2020</div>
+                    <div class="history-title">芝浦工業大学附属中学校 入学</div>
+                    <div class="history-description">
+                        プログラミングへの興味から、情報教育に強い芝浦工大附属へ。電子技術研究部に所属し、プログラミングの基礎を学ぶ。
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-year">2021</div>
+                    <div class="history-title">美術部への転部</div>
+                    <div class="history-description">
+                        技術的な制約を超えた自由な表現を求めて美術部へ。「ゲームもアートの一つ」という視点から、技術と芸術の融合を模索し始める。
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-year">2022-2023</div>
+                    <div class="history-title">ビジネスコンテストへの挑戦</div>
+                    <div class="history-description">
+                        実装から企画・ビジネスモデル構築へと興味が拡大。「雰囲気マップ」（色と音で雰囲気を可視化する地図アプリ）を企画。
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-year">2024</div>
+                    <div class="history-title">The 0th Pitch 主催</div>
+                    <div class="history-description">
+                        ビジネス用語禁止のピッチイベントを主催。形式的な関わり合いへの疑問から、より本質的なコミュニケーションの場を創出。
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-year">2024-2025</div>
+                    <div class="history-title">起業とアートへの転換</div>
+                    <div class="history-description">
+                        株式会社設立のスタートメンバーとして参画後、退社。紆余曲折を経て、アートという文脈で人と人との新たな関わり方を探求し始める。
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-year">2024-現在</div>
+                    <div class="history-title">作品制作と展示活動</div>
+                    <div class="history-description">
+                        「hamon.exe」をはじめとする作品制作。TEDxUTokyoでの展示、音で遊ぶ会でのVJ、サントリーホールでのパフォーマンスなど、多様な場で活動を展開。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://www.instagram.com/ren_atmo" class="social-link" target="_blank">Instagram</a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2024 堤 廉太郎</p>
+    </footer>
+    
+    <script>
+        // 年齢を自動計算
+        function calculateAge() {
+            const birthDate = new Date(2007, 11, 18); // 月は0から始まるので11が12月
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            document.getElementById('age').textContent = age + '歳';
+        }
+        
+        calculateAge();
+    </script>
+</body>
+</html>

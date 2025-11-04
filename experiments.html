@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実験 - 堤 廉太郎</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "游ゴシック", "Yu Gothic", sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.8;
+        }
+        
+        /* ヘッダー */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 20px 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            font-weight: normal;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            margin-left: 30px;
+            transition: opacity 0.3s ease;
+        }
+        
+        nav a:hover {
+            opacity: 0.6;
+        }
+        
+        /* 実験コンテナ */
+        .experiments-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+        
+        .experiments-title {
+            font-size: 32px;
+            font-weight: normal;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 0.1em;
+        }
+        
+        .experiments-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 60px;
+        }
+        
+        /* 実験カード */
+        .experiment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .experiment-card {
+            background: #f8f8f8;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .experiment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .experiment-status {
+            display: inline-block;
+            font-size: 11px;
+            padding: 4px 10px;
+            margin-bottom: 15px;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        
+        .status-ongoing {
+            background: #333;
+            color: white;
+        }
+        
+        .status-planning {
+            background: white;
+            color: #333;
+            border: 1px solid #333;
+        }
+        
+        .status-complete {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .experiment-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .experiment-tech {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 20px;
+            letter-spacing: 0.03em;
+        }
+        
+        .experiment-description {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .experiment-goal {
+            font-size: 13px;
+            padding: 15px;
+            background: white;
+            border-left: 3px solid #333;
+        }
+        
+        .experiment-goal-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        /* 技術スタック */
+        .tech-stack {
+            margin-bottom: 60px;
+        }
+        
+        .tech-stack-title {
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 0.08em;
+        }
+        
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .tech-category {
+            text-align: center;
+        }
+        
+        .tech-category-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tech-list {
+            list-style: none;
+        }
+        
+        .tech-list li {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        /* 今後の展望 */
+        .future-vision {
+            background: #f8f8f8;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .future-vision-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 0.08em;
+        }
+        
+        .future-vision-text {
+            font-size: 14px;
+            line-height: 2;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav {
+                margin-top: 10px;
+            }
+            
+            nav a {
+                margin-left: 0;
+                margin-right: 20px;
+            }
+            
+            .experiments-container {
+                padding: 100px 20px 60px;
+            }
+            
+            .experiments-title {
+                font-size: 28px;
+            }
+            
+            .experiment-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .tech-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .future-vision {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">堤 廉太郎</a>
+            <nav>
+                <a href="index.html#works">Works</a>
+                <a href="philosophy.html">Philosophy</a>
+                <a href="profile.html">Profile</a>
+                <a href="experiments.html">Experiments</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="experiments-container">
+        <h1 class="experiments-title">実験</h1>
+        <p class="experiments-subtitle">現在進行中の技術的探求と創作の試み</p>
+        
+        <div class="experiment-grid">
+            <div class="experiment-card">
+                <span class="experiment-status status-ongoing">進行中</span>
+                <h2 class="experiment-title">リアルタイム音響可視化システム 2.0</h2>
+                <p class="experiment-tech">TouchDesigner / Python / OSC</p>
+                <p class="experiment-description">
+                    hamon.exeの進化版。より複雑な音響解析と視覚表現の関係性を探る。FFT解析の精度向上と、3D空間での音の可視化を実験中。複数の音源を同時に解析し、それぞれの特性に応じた独自の視覚言語を生成する。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>音の持つ感情的・物理的特性を、より直感的に理解可能な視覚表現へと変換するシステムの確立</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <span class="experiment-status status-ongoing">進行中</span>
+                <h2 class="experiment-title">身体性とデジタルの融合</h2>
+                <p class="experiment-tech">TouchDesigner / Kinect / MediaPipe</p>
+                <p class="experiment-description">
+                    身体の動きをリアルタイムでトラッキングし、その動作パターンから生成される視覚・音響フィードバック。ダンサーの動きを音に変換し、その音をさらに映像として投影する循環的なシステムを構築。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>身体表現の新たな拡張可能性を探り、パフォーマンスアートの領域を広げる</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <span class="experiment-status status-planning">計画中</span>
+                <h2 class="experiment-title">集合的無意識の可視化</h2>
+                <p class="experiment-tech">TouchDesigner / Web API / Machine Learning</p>
+                <p class="experiment-description">
+                    複数人の生体データ（心拍、脳波など）を収集し、その同期性や差異を視覚化。集団での瞑想やセッション時に現れる共鳴現象を捉え、「場」の雰囲気を可視化することを試みる。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>非言語的な集団コミュニケーションの存在を証明し、新たな対話の形を提案</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <span class="experiment-status status-ongoing">進行中</span>
+                <h2 class="experiment-title">環境音のアーカイブと再構築</h2>
+                <p class="experiment-tech">Field Recording / Max/MSP / TouchDesigner</p>
+                <p class="experiment-description">
+                    都市の様々な場所で収集した環境音を、時間・場所・感情のタグ付けとともにアーカイブ。これらを再構築することで、記憶と場所の関係性を音響的に表現する作品を制作。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>場所の持つ「雰囲気」を音として保存し、新たな空間体験を創出する</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <span class="experiment-status status-planning">計画中</span>
+                <h2 class="experiment-title">テルミン × AI</h2>
+                <p class="experiment-tech">Arduino / TensorFlow / TouchDesigner</p>
+                <p class="experiment-description">
+                    テルミンの非接触インターフェースを活用し、空間での手の動きから音と映像を同時生成。機械学習により、演奏者の癖やパターンを学習し、協調的な音楽生成を行うAIシステムの開発。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>人間とAIの創造的な協働関係を、音楽というメディアを通じて探求</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <span class="experiment-status status-ongoing">進行中</span>
+                <h2 class="experiment-title">写真の時間軸操作</h2>
+                <p class="experiment-tech">Python / OpenCV / Processing</p>
+                <p class="experiment-description">
+                    「There are me」「Shibuya_No.01」で用いた手法をアルゴリズム化。異なる時間に撮影された写真を、ピクセル単位で織り交ぜることで、時間の重層性を表現する自動化システムを開発。
+                </p>
+                <div class="experiment-goal">
+                    <div class="experiment-goal-label">目標</div>
+                    <p>時間という概念を視覚的に再定義し、写真メディアの新たな表現可能性を開拓</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tech-stack">
+            <h2 class="tech-stack-title">使用技術・学習中の技術</h2>
+            <div class="tech-categories">
+                <div class="tech-category">
+                    <h3 class="tech-category-title">ビジュアルプログラミング</h3>
+                    <ul class="tech-list">
+                        <li>TouchDesigner</li>
+                        <li>Max/MSP</li>
+                        <li>Processing</li>
+                        <li>openFrameworks（学習中）</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3 class="tech-category-title">プログラミング言語</h3>
+                    <ul class="tech-list">
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>C++（基礎）</li>
+                        <li>GLSL（学習中）</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3 class="tech-category-title">ハードウェア・センサー</h3>
+                    <ul class="tech-list">
+                        <li>Arduino</li>
+                        <li>Kinect</li>
+                        <li>AITRIOS</li>
+                        <li>テルミン</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3 class="tech-category-title">音響・映像</h3>
+                    <ul class="tech-list">
+                        <li>Ableton Live</li>
+                        <li>Adobe Creative Suite</li>
+                        <li>FFT解析</li>
+                        <li>OSC通信</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="future-vision">
+            <h2 class="future-vision-title">今後の展望</h2>
+            <p class="future-vision-text">
+                技術は手段であり、目的ではない。<br><br>
+                これらの実験を通じて探求しているのは、人と人、人と環境、意識と無意識の間に存在する見えない関係性を可視化・可聴化することである。
+                TouchDesignerやProcessingといったツールは、その探求のための道具に過ぎない。<br><br>
+                最終的には、これらの実験から得られた知見を統合し、
+                観客が能動的に参加し、共に作品を生成していくようなインタラクティブな体験を創出したい。
+                それは単なる技術デモンストレーションではなく、人々の意識を変容させ、
+                新たな認識の扉を開く装置となることを目指している。
+            </p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2024 堤 廉太郎</p>
+    </footer>
+</body>
+</html>
