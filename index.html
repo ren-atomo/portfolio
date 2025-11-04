@@ -228,11 +228,54 @@
             background: #f5f5f5;
         }
         
-        /* 詳細コンテンツエリア */
-        .work-detail-content {
+        /* 詳細情報全体のコンテナ */
+        .work-detail-container {
             max-width: 1200px;
             margin: 60px auto;
             padding: 0 40px;
+        }
+        
+        /* タイトルとメタ情報（上部） */
+        .work-detail-header {
+            margin-bottom: 40px;
+        }
+        
+        .work-detail-header h2 {
+            font-size: 32px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+        
+        .work-detail-meta {
+            font-size: 14px;
+            color: #666;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .work-detail-meta span {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        
+        .work-detail-meta span::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: #999;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .work-detail-meta span:first-child::before {
+            display: none;
+        }
+        
+        /* コンテンツエリア（ギャラリーと説明） */
+        .work-detail-content {
             display: flex;
             gap: 40px;
         }
@@ -262,41 +305,6 @@
         /* 説明（右側） */
         .work-detail-info {
             flex: 2;
-        }
-        
-        .work-detail-info h2 {
-            font-size: 32px;
-            font-weight: normal;
-            margin-bottom: 20px;
-            letter-spacing: 0.05em;
-        }
-        
-        .work-detail-meta {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .work-detail-meta span {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        
-        .work-detail-meta span::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            background: #999;
-            border-radius: 50%;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        .work-detail-meta span:first-child::before {
-            display: none;
         }
         
         .work-detail-description {
@@ -409,12 +417,12 @@
                 height: 50vh;
             }
             
-            .work-detail-content {
+            .work-detail-container {
                 padding: 0 20px;
                 margin: 40px auto;
             }
             
-            .work-detail-info h2 {
+            .work-detail-header h2 {
                 font-size: 24px;
             }
             
@@ -733,17 +741,21 @@ hamon.exeはこれまで、広く開かれた空間で非言語的な関わり�
                 
                 workDetail.innerHTML = `
                     <img src="${data.image}" alt="${data.title}" class="work-detail-hero" id="heroImage">
-                    <div class="work-detail-content">
-                        ${galleryHTML}
-                        <div class="work-detail-info">
+                    <div class="work-detail-container">
+                        <div class="work-detail-header">
                             <h2>${data.title}</h2>
                             <div class="work-detail-meta">
                                 <span>${data.category}</span>
                                 <span>${data.year}</span>
                                 <span>${data.place}</span>
                             </div>
-                            <div class="work-detail-description">${data.description}</div>
-                            ${videoHTML}
+                        </div>
+                        <div class="work-detail-content">
+                            ${galleryHTML}
+                            <div class="work-detail-info">
+                                <div class="work-detail-description">${data.description}</div>
+                                ${videoHTML}
+                            </div>
                         </div>
                     </div>
                 `;
