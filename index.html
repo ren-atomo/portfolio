@@ -215,7 +215,7 @@
             transform: translate(-50%, -50%) rotate(-45deg);
         }
         
-        /* 詳細ページのスタイル - 更新 */
+        /* 詳細ページのスタイル */
         .work-detail {
             width: 100%;
         }
@@ -226,6 +226,7 @@
             height: 80vh;
             object-fit: contain;
             background: #f5f5f5;
+            cursor: zoom-in;
         }
         
         /* 詳細情報全体のコンテナ */
@@ -333,6 +334,107 @@
             border: none;
         }
         
+        /* ライトボックス */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .lightbox-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        .lightbox-close::before,
+        .lightbox-close::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        
+        .lightbox-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        
+        /* ライトボックス ナビゲーション */
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .lightbox-prev {
+            left: 30px;
+        }
+        
+        .lightbox-next {
+            right: 30px;
+        }
+        
+        .lightbox-nav::before {
+            content: '';
+            width: 15px;
+            height: 15px;
+            border-top: 2px solid white;
+            border-right: 2px solid white;
+        }
+        
+        .lightbox-prev::before {
+            transform: rotate(-135deg);
+            margin-left: 5px;
+        }
+        
+        .lightbox-next::before {
+            transform: rotate(45deg);
+            margin-right: 5px;
+        }
+        
         /* フッター */
         footer {
             text-align: center;
@@ -381,6 +483,7 @@
             nav a {
                 margin-left: 0;
                 margin-right: 20px;
+                font-size: 13px;
             }
             
             .container {
@@ -429,6 +532,19 @@
             .work-gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -438,7 +554,9 @@
             <div class="logo">堤 廉太郎</div>
             <nav>
                 <a href="#works">Works</a>
-                <a href="#philosophy">Philosophy</a>
+                <a href="philosophy.html">Philosophy</a>
+                <a href="profile.html">Profile</a>
+                <a href="experiments.html">Experiments</a>
             </nav>
         </div>
     </header>
@@ -539,6 +657,16 @@
             <div class="work-detail" id="workDetail">
                 <!-- 動的にコンテンツが挿入される -->
             </div>
+        </div>
+    </div>
+    
+    <!-- ライトボックス -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="lightboxClose"></div>
+        <div class="lightbox-nav lightbox-prev" id="lightboxPrev"></div>
+        <div class="lightbox-nav lightbox-next" id="lightboxNext"></div>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
         </div>
     </div>
     
@@ -699,16 +827,25 @@ hamon.exeはこれまで、広く開かれた空間で非言語的な関わり�
         const workDetail = document.getElementById('workDetail');
         const works = document.querySelectorAll('.work');
         
-        // 現在表示中の画像インデックス
-        let currentImageIndex = 0;
-        let currentGallery = [];
+        // ライトボックス要素
+        const lightbox = document.getElementById('lightbox');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        const lightboxImage = document.getElementById('lightboxImage');
+        
+        // 現在の画像インデックス
+        let currentLightboxIndex = 0;
+        let currentGalleryImages = [];
         
         works.forEach(work => {
             work.addEventListener('click', function() {
                 const id = this.dataset.id;
                 const data = worksData[id];
-                currentImageIndex = 0;
-                currentGallery = [data.image, ...data.gallery];
+                
+                // ギャラリー画像リストを作成（メイン画像 + 追加画像）
+                currentGalleryImages = [data.image, ...data.gallery];
+                currentLightboxIndex = 0;
                 
                 // ギャラリーHTMLを生成
                 let galleryHTML = '';
@@ -763,24 +900,73 @@ hamon.exeはこれまで、広く開かれた空間で非言語的な関わり�
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
-                // ギャラリーアイテムのクリックイベントを設定
-                const galleryItems = document.querySelectorAll('.gallery-item');
+                // ヒーロー画像クリックでライトボックスを開く
                 const heroImage = document.getElementById('heroImage');
+                heroImage.addEventListener('click', function() {
+                    currentLightboxIndex = 0;
+                    openLightbox(currentGalleryImages[0]);
+                });
                 
+                // ギャラリーアイテムクリックでライトボックスを開く
+                const galleryItems = document.querySelectorAll('.gallery-item');
                 galleryItems.forEach(item => {
                     item.addEventListener('click', function() {
                         const index = parseInt(this.dataset.index);
-                        currentImageIndex = index;
-                        heroImage.src = currentGallery[index];
+                        currentLightboxIndex = index;
+                        openLightbox(currentGalleryImages[index]);
                     });
                 });
-                
-                // ヒーロー画像のクリックで元の画像に戻る
-                heroImage.addEventListener('click', function() {
-                    currentImageIndex = 0;
-                    heroImage.src = currentGallery[0];
-                });
             });
+        });
+        
+        // ライトボックス機能
+        function openLightbox(imageSrc) {
+            lightboxImage.src = imageSrc;
+            lightbox.classList.add('active');
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+        
+        function showPrevImage() {
+            currentLightboxIndex = (currentLightboxIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+            lightboxImage.src = currentGalleryImages[currentLightboxIndex];
+        }
+        
+        function showNextImage() {
+            currentLightboxIndex = (currentLightboxIndex + 1) % currentGalleryImages.length;
+            lightboxImage.src = currentGalleryImages[currentLightboxIndex];
+        }
+        
+        // ライトボックスのイベントリスナー
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrevImage);
+        lightboxNext.addEventListener('click', showNextImage);
+        
+        // ライトボックス背景クリックで閉じる
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // キーボード操作
+        document.addEventListener('keydown', function(e) {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                }
+            } else if (modal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
         });
         
         modalClose.addEventListener('click', function() {
@@ -790,14 +976,6 @@ hamon.exeはこれまで、広く開かれた空間で非言語的な関わり�
         
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-        
-        // ESCキーでモーダルを閉じる
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             }
