@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>堤 廉太郎 - portfolio</title>
+    <title>思想 - 堤 廉太郎</title>
     <style>
         * {
             margin: 0;
@@ -15,7 +15,12 @@
             font-family: "游ゴシック", "Yu Gothic", sans-serif;
             color: #333;
             background: #fff;
-            line-height: 1.7;
+            line-height: 2;
+        }
+        
+        /* スムーススクロール */
+        html {
+            scroll-behavior: smooth;
         }
         
         /* ヘッダー */
@@ -43,6 +48,19 @@
             font-size: 16px;
             letter-spacing: 0.08em;
             font-weight: normal;
+            text-decoration: none;
+            color: #333;
+            transition: opacity 0.3s ease;
+        }
+        
+        .logo:hover {
+            opacity: 0.6;
+        }
+        
+        /* デスクトップナビゲーション */
+        nav {
+            display: flex;
+            align-items: center;
         }
         
         nav a {
@@ -50,104 +68,199 @@
             color: #333;
             font-size: 14px;
             margin-left: 30px;
-            transition: opacity 0.3s ease;
-        }
-        
-        nav a:hover {
-            opacity: 0.6;
-        }
-        
-        /* メインコンテンツ */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 100px 40px 40px;
-        }
-        
-        /* Masonryグリッド */
-        .works-mosaic {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 200px;
-            gap: 15px;
-            margin-bottom: 80px;
-        }
-        
-        .work {
             position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            background: #f5f5f5;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
         
-        .work:hover {
-            transform: scale(0.98);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        /* グリッド配置 */
-        .work:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 3; }
-        .work:nth-child(2) { grid-column: 3; grid-row: 1; }
-        .work:nth-child(3) { grid-column: 4; grid-row: 1 / span 2; }
-        .work:nth-child(4) { grid-column: 3; grid-row: 2; }
-        .work:nth-child(5) { grid-column: 1; grid-row: 4; }
-        .work:nth-child(6) { grid-column: 2; grid-row: 4; }
-        .work:nth-child(7) { grid-column: 3 / span 2; grid-row: 3 / span 2; }
-        
-        .work-image {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        
-        .work-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .work-overlay {
+        /* ホバーアニメーション */
+        nav a::after {
+            content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -5px;
             left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 25px;
-            color: white;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s ease;
         }
         
-        .work:hover .work-overlay {
-            transform: translateY(0);
+        nav a:hover::after {
+            width: 100%;
         }
         
-        .work-title {
-            font-size: 15px;
-            margin-bottom: 4px;
+        /* 現在のページをハイライト */
+        nav a.current {
             font-weight: 500;
         }
         
-        .work:nth-child(1) .work-title,
-        .work:nth-child(7) .work-title {
-            font-size: 20px;
+        nav a.current::after {
+            width: 100%;
         }
         
-        .work-meta {
-            font-size: 13px;
-            opacity: 0.9;
+        /* モバイルメニューボタン */
+        .mobile-menu-btn {
+            display: none;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 101;
         }
         
-        /* 思想へのリンク */
-        .philosophy-section {
+        .mobile-menu-btn span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn span:nth-child(1) {
+            top: 0;
+        }
+        
+        .mobile-menu-btn span:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .mobile-menu-btn span:nth-child(3) {
+            bottom: 0;
+        }
+        
+        /* メニュー開いた時のアニメーション */
+        .mobile-menu-btn.active span:nth-child(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+        
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(3) {
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+        
+        /* モバイルメニュー */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 99;
+            transition: right 0.3s ease;
+            padding: 80px 20px 40px;
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 15px 0;
+            font-size: 16px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-menu a:hover {
+            opacity: 0.6;
+        }
+        
+        .mobile-menu a.current {
+            font-weight: 500;
+        }
+        
+        /* メインコンテンツ */
+        .philosophy-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+        
+        .philosophy-title {
+            font-size: 32px;
+            font-weight: normal;
             text-align: center;
-            padding: 100px 20px;
-            border-top: 1px solid #f0f0f0;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
         }
         
-        .philosophy-link {
+        /* セクション */
+        .philosophy-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            letter-spacing: 0.05em;
+        }
+        
+        /* 本文スタイル */
+        .philosophy-text {
+            font-size: 15px;
+            line-height: 2.2;
+            color: #444;
+            text-align: justify;
+            margin-bottom: 25px;
+        }
+        
+        .philosophy-text.indent {
+            padding-left: 1em;
+        }
+        
+        .philosophy-text.emphasis {
+            font-weight: 500;
+            color: #222;
+            margin: 30px 0;
+        }
+        
+        /* リスト */
+        .concept-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .concept-list li {
+            list-style: none;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #444;
+        }
+        
+        .concept-list li::before {
+            content: '・';
+            position: absolute;
+            left: -15px;
+        }
+        
+        /* 引用風のブロック */
+        .thought-block {
+            background: #f8f8f8;
+            padding: 20px 25px;
+            margin: 30px 0;
+            border-left: 3px solid #ddd;
+            font-size: 14px;
+            line-height: 2;
+        }
+        
+        /* リンク */
+        .back-link {
             display: inline-block;
+            margin-top: 60px;
             color: #333;
             text-decoration: none;
             font-size: 14px;
@@ -157,282 +270,49 @@
             transition: opacity 0.3s ease;
         }
         
-        .philosophy-link:hover {
+        .back-link:hover {
             opacity: 0.6;
         }
         
-        /* モーダル */
-        .modal {
+        /* ページトップへ戻るボタン */
+        .scroll-to-top {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: white;
-            z-index: 1000;
-            display: none;
-            overflow-y: auto;
-        }
-        
-        .modal.active {
-            display: block;
-        }
-        
-        .modal-content {
-            width: 100%;
-        }
-        
-        .modal-close {
-            position: fixed;
-            top: 40px;
-            right: 40px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            z-index: 1001;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            transform: scale(1.1);
-        }
-        
-        .modal-close::before,
-        .modal-close::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 1px;
-            background: #333;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-        
-        .modal-close::after {
-            transform: translate(-50%, -50%) rotate(-45deg);
-        }
-        
-        /* 詳細ページのスタイル */
-        .work-detail {
-            width: 100%;
-        }
-        
-        /* フルサイズ画像 */
-        .work-detail-hero {
-            width: 100%;
-            height: 80vh;
-            object-fit: contain;
-            background: #f5f5f5;
-            cursor: zoom-in;
-        }
-        
-        /* 詳細情報全体のコンテナ */
-        .work-detail-container {
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 0 40px;
-        }
-        
-        /* タイトルとメタ情報（上部） */
-        .work-detail-header {
-            margin-bottom: 40px;
-        }
-        
-        .work-detail-header h2 {
-            font-size: 32px;
-            font-weight: normal;
-            margin-bottom: 20px;
-            letter-spacing: 0.05em;
-        }
-        
-        .work-detail-meta {
-            font-size: 14px;
-            color: #666;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .work-detail-meta span {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        
-        .work-detail-meta span::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            background: #999;
-            border-radius: 50%;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        .work-detail-meta span:first-child::before {
-            display: none;
-        }
-        
-        /* コンテンツエリア（ギャラリーと説明） */
-        .work-detail-content {
-            display: flex;
-            gap: 40px;
-        }
-        
-        /* 追加写真ギャラリー（左側） */
-        .work-gallery {
-            flex: 1;
-            max-width: 300px;
-        }
-        
-        .gallery-item {
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        
-        .gallery-item:hover {
-            opacity: 0.8;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* 説明（右側） */
-        .work-detail-info {
-            flex: 2;
-        }
-        
-        .work-detail-description {
-            font-size: 15px;
-            line-height: 2;
-            white-space: pre-wrap;
-            color: #444;
-            margin-bottom: 40px;
-        }
-        
-        /* YouTube埋め込み */
-        .work-video {
-            margin-top: 40px;
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-            overflow: hidden;
-        }
-        
-        .work-video iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        /* ライトボックス */
-        .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .lightbox.active {
-            display: flex;
-        }
-        
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90vh;
-        }
-        
-        .lightbox-image {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-        
-        .lightbox-close {
-            position: fixed;
-            top: 30px;
+            bottom: 30px;
             right: 30px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            z-index: 2001;
-        }
-        
-        .lightbox-close::before,
-        .lightbox-close::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 2px;
-            background: white;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-        
-        .lightbox-close::after {
-            transform: translate(-50%, -50%) rotate(-45deg);
-        }
-        
-        /* ライトボックス ナビゲーション */
-        .lightbox-nav {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
             width: 50px;
             height: 50px;
-            background: rgba(255, 255, 255, 0.1);
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
             cursor: pointer;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s ease;
+            z-index: 90;
+            transition: all 0.3s ease;
         }
         
-        .lightbox-nav:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .scroll-to-top.show {
+            display: flex;
         }
         
-        .lightbox-prev {
-            left: 30px;
+        .scroll-to-top:hover {
+            background: #333;
+            border-color: #333;
         }
         
-        .lightbox-next {
-            right: 30px;
-        }
-        
-        .lightbox-nav::before {
+        .scroll-to-top::before {
             content: '';
-            width: 15px;
-            height: 15px;
-            border-top: 2px solid white;
-            border-right: 2px solid white;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #333;
+            border-right: 2px solid #333;
+            transform: rotate(-45deg);
+            margin-top: 5px;
         }
         
-        .lightbox-prev::before {
-            transform: rotate(-135deg);
-            margin-left: 5px;
-        }
-        
-        .lightbox-next::before {
-            transform: rotate(45deg);
-            margin-right: 5px;
+        .scroll-to-top:hover::before {
+            border-color: white;
         }
         
         /* フッター */
@@ -445,105 +325,42 @@
         }
         
         /* レスポンシブ */
-        @media (max-width: 1024px) {
-            .container {
-                padding: 100px 30px 40px;
-            }
-            
-            .works-mosaic {
-                grid-auto-rows: 160px;
-            }
-            
-            .work-detail-content {
-                flex-direction: column;
-            }
-            
-            .work-gallery {
-                max-width: 100%;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
-        }
-        
         @media (max-width: 768px) {
             header {
                 padding: 15px 20px;
             }
             
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
             nav {
-                margin-top: 10px;
+                display: none;
             }
             
-            nav a {
-                margin-left: 0;
-                margin-right: 20px;
-                font-size: 13px;
+            .mobile-menu-btn {
+                display: block;
             }
             
-            .container {
-                padding: 80px 20px 40px;
+            .philosophy-container {
+                padding: 100px 20px 60px;
             }
             
-            .works-mosaic {
-                grid-template-columns: repeat(2, 1fr);
-                grid-auto-rows: 140px;
-                gap: 10px;
+            .philosophy-title {
+                font-size: 28px;
+                margin-bottom: 40px;
             }
             
-            .work:nth-child(1),
-            .work:nth-child(7) {
-                grid-column: span 2;
-                grid-row: span 2;
+            .section-title {
+                font-size: 18px;
             }
             
-            .work:nth-child(2),
-            .work:nth-child(3),
-            .work:nth-child(4),
-            .work:nth-child(5),
-            .work:nth-child(6) {
-                grid-column: span 1;
-                grid-row: span 1;
+            .philosophy-text {
+                font-size: 14px;
+                text-align: left;
             }
             
-            .modal-close {
-                top: 20px;
+            .scroll-to-top {
+                bottom: 20px;
                 right: 20px;
-            }
-            
-            .work-detail-hero {
-                height: 50vh;
-            }
-            
-            .work-detail-container {
-                padding: 0 20px;
-                margin: 40px auto;
-            }
-            
-            .work-detail-header h2 {
-                font-size: 24px;
-            }
-            
-            .work-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .lightbox-nav {
                 width: 40px;
                 height: 40px;
-            }
-            
-            .lightbox-prev {
-                left: 10px;
-            }
-            
-            .lightbox-next {
-                right: 10px;
             }
         }
     </style>
@@ -551,434 +368,202 @@
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">堤 廉太郎</div>
+            <a href="index.html" class="logo">堤 廉太郎</a>
             <nav>
-                <a href="#works">Works</a>
-                <a href="philosophy.html">Philosophy</a>
+                <a href="index.html#works">Works</a>
+                <a href="philosophy.html" class="current">Philosophy</a>
                 <a href="profile.html">Profile</a>
                 <a href="experiments.html">Experiments</a>
             </nav>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </header>
     
-    <div class="container" id="works">
-        <div class="works-mosaic">
-            <!-- hamon.exe -->
-            <div class="work" data-id="3">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/IMG_9995.jpg" alt="hamon.exe">
-                    <div class="work-overlay">
-                        <div class="work-title">hamon.exe</div>
-                        <div class="work-meta">cg · 2024-2025</div>
-                    </div>
-                </div>
-            </div>
+    <!-- モバイルメニュー -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#works">Works</a>
+        <a href="philosophy.html" class="current">Philosophy</a>
+        <a href="profile.html">Profile</a>
+        <a href="experiments.html">Experiments</a>
+    </div>
+    
+    <div class="philosophy-container">
+        <h1 class="philosophy-title">思想</h1>
+        
+        <div class="philosophy-section">
+            <p class="philosophy-text emphasis">
+                前提として、私は「良い」というものは絶対的なものとして定義できないと考えている。以下の文章は現時点での私の考えを述べたものであり、これからの私の思想や価値観を絶対化するものではない。
+            </p>
             
-            <!-- There are me -->
-            <div class="work" data-id="1">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/There_are_me.jpg" alt="There are me">
-                    <div class="work-overlay">
-                        <div class="work-title">There are me</div>
-                        <div class="work-meta">picture · 2024 · 渋谷</div>
-                    </div>
-                </div>
-            </div>
+            <p class="philosophy-text emphasis">
+                私は「良い〇〇」を遺したい。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">矛盾との対峙</h2>
             
-            <!-- コラボ -->
-            <div class="work" data-id="4">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/image1.jpg" alt="hamon.exe × 勝川東さん">
-                    <div class="work-overlay">
-                        <div class="work-title">hamon.exe × 勝川東さん</div>
-                        <div class="work-meta">event · 2024 · 月崎</div>
-                    </div>
-                </div>
-            </div>
+            <p class="philosophy-text">
+                これは、矛盾を孕んでいる。<br>
+                矛盾を自分の思想に内包することを拒絶しているわけではない。しかし、それを肯定することが無意識のうちに無限の後退・停滞へ向かっていないかという恐怖がある。
+            </p>
             
-            <!-- TEDx -->
-            <div class="work" data-id="5">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/tedxutokyo2025.jpeg" alt="TEDxUTokyo">
-                    <div class="work-overlay">
-                        <div class="work-title">TEDxUTokyo "でこぼこ"</div>
-                        <div class="work-meta">event · 2025 · 東京大学</div>
-                    </div>
-                </div>
-            </div>
+            <p class="philosophy-text">
+                これ自体を俯瞰した時に「生成的な緊張」だと捉えることは簡単だ。しかし、それによって無意識のうちに慢心してしまわないかという恐怖がそれをさせなくしている。
+            </p>
             
-            <!-- 音で遊ぶ会 -->
-            <div class="work" data-id="6">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/play_sound.jpeg" alt="音で遊ぶ会">
-                    <div class="work-overlay">
-                        <div class="work-title">音で遊ぶ会</div>
-                        <div class="work-meta">vj · 2025 · 下北沢</div>
-                    </div>
-                </div>
-            </div>
+            <p class="philosophy-text">
+                作品を作るという行為自体が、その停滞から一歩先に進むためのプロセスなのかも知れない。<br>
+                →作品を作る、その状態を俯瞰する、その作品が起こす痕跡の表れを受け取る、それを思想の養分として落とし込む
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">「良い」という概念について</h2>
             
-            <!-- Unleash -->
-            <div class="work" data-id="7">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/unleash.jpg" alt="Unleash the Dream">
-                    <div class="work-overlay">
-                        <div class="work-title">Unleash the Dream 出演</div>
-                        <div class="work-meta">event · 2025 · サントリーホール</div>
-                    </div>
-                </div>
-            </div>
+            <p class="philosophy-text">
+                「良い」というものは、社会の形によって変動する。しかし、その社会に内包される文化、技術、学問、生活などの価値観は、カオスなものとして独立して予測不可能に存在するのではない。それぞれが密接に絡まり合い、ある流れを持って変動している。だからこそ、その時代、その時々での「良い」は、ある程度予測可能である。
+            </p>
             
-            <!-- Shibuya_No.01 -->
-            <div class="work" data-id="2">
-                <div class="work-image">
-                    <img src="https://ren-atomo.github.io/about/image2.jpg" alt="Shibuya_No.01">
-                    <div class="work-overlay">
-                        <div class="work-title">Shibuya_No.01</div>
-                        <div class="work-meta">picture · 2024 · 渋谷</div>
-                    </div>
-                </div>
+            <div class="thought-block">
+                現代アート（主にアースワーク）の考え方に近いかもしれない<br>
+                →「現代アートでは定着化しない空間や時間の概念まで捉えようとするために、最終的に作品がある決まった形体に落ち着くとは、言い切れなくなっている。偶然によって生まれた形体がそのまま作品になるなど、制作のプロセスや、状況まで含めて見せるようなパフォーマンス性の強い作品も登場している。」
             </div>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">理解と孤独への恐怖</h2>
+            
+            <p class="philosophy-text">
+                僕は理解されないことに恐怖を感じている。<br>
+                テキストを書く時、常に「理解されないのではないか」「伝わらないんじゃないか」という恐怖がつきまとう。そして、理解してくれる人を失いたくない→孤独になりたくないという防衛意識も強い。
+            </p>
+            
+            <p class="philosophy-text">
+                けれど、「理解してほしい」「認めてほしい」という欲求は強い。ただ、「理解」は表面的なものではなく本質的なところでの理解を求めている。（これは、理想論に過ぎないと知りながら）だから、安易な理解を無意識的にも拒絶してしまう。
+            </p>
+            
+            <p class="philosophy-text">
+                社会の中で生き抜くための仮面の使い方は磨いてきたが、自分の本音を出しながら社会の中で生きるための戦略を考えなければならない。どこで、折り合いをつけるのか。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">現時点で考える「良い」</h2>
+            
+            <ul class="concept-list">
+                <li>人とご飯を食べること</li>
+                <li>人と建前を越えて関わること</li>
+                <li>意識感を変える→社会に対しての見え方が変わることで幸福感が変わる</li>
+                <li>幸福であること</li>
+                <li>幸福を求めること</li>
+                <li>想像すること</li>
+                <li>毒と薬→万物は使い方と量によって、毒にも薬にもなり得る</li>
+                <li>痕跡が残る・記憶が残る</li>
+            </ul>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">技術と思想</h2>
+            
+            <p class="philosophy-text">
+                いくら優れた技術を持っていても、それを扱う思想・哲学が欠けていては、その技術は人に危害を加える武器になりえる。反対に、いくら洗練・高度化された思想・哲学があったとしても、それに見合う技術を持っていなければ、外界に対して影響は与えられない。
+            </p>
+            
+            <p class="philosophy-text">
+                どちらか一方を注視するのではなく、どちらも常に磨き・見つめ直し・修正しなければならない。その為には、自分・外界・社会それぞれやそれらの関わり合いを客観視する術が必要になる。しかし、それに終始し無限の後退・停滞となる可能性も認識しなければならない。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">評価することの暴力性</h2>
+            
+            <p class="philosophy-text">
+                何かを評価するということは、評価対象に対して「理想の状態は〇〇である。」ということにもなり得る。それは、ポジティブなものでもネガティブなものでもだ。特に、自分より立場が上のもの・尊敬するものの評価は大きく影響させる。僕らは、評価することの暴力性を認識しなければならない。
+            </p>
+            
+            <p class="philosophy-text">
+                しかし、それだけでは人に愛を伝えられない。また、褒められることを人は次へ進む原動力にもしうる。相手が何を求めている・何と声をかければ先へ進めるかは、完全にはわからない。だけれども、考えることを放棄してはならない。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">食を通じた共有</h2>
+            
+            <p class="philosophy-text">
+                ご飯を食べると幸せになる。これは、いつでもそうだ。生物として、栄養を取らなければ死ぬ。だから、最低限の栄養は取らなければならない。しかし、その枠組み以上に「ご飯を食べる」ということに幸福を感じる。特に、それは他者と同じ食を共有するときに増幅される。
+            </p>
+            
+            <p class="philosophy-text">
+                だから、ぼくはみんなでカレーを作りたい。カレーを選ぶ理由はシンプルで、僕が好きなことと、キャッチーであることと、みんなで作るという点において簡単だからだ。しかし、カレーという形式に固執するつもりはない。その時その時で、必要な栄養素は違う。
+            </p>
+            
+            <p class="philosophy-text">
+                重要なのは、人と食を共有する幸福に気づかせ、それが派生していくことだ。僕のイベントに参加した誰かが、自分なりの食のイベントを始める。別の料理で、別の場所で、別のやり方で。この枠組みにこそ価値があると考える。
+            </p>
+        </div>
+        
+        <div class="philosophy-section">
+            <h2 class="section-title">作品を作るうえでの考え</h2>
+            
+            <ul class="concept-list">
+                <li>意識の変化によって、外界からの刺激から得る感情・感覚は変化し得る</li>
+                <li>人間は複雑な事象を理解するときに今まで得たパターンに当てはめようとする</li>
+                <li>言葉のシニフィアンとシニフィエは必然的に結びついたものではなく、シニフィアンを受け取った意識が経てきた経験によってある程度変化しえる</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html#works" class="back-link">作品一覧へ戻る</a>
         </div>
     </div>
     
-    <div class="philosophy-section" id="philosophy">
-        <a href="philosophy.html" class="philosophy-link">思想について</a>
-    </div>
+    <!-- トップへ戻るボタン -->
+    <div class="scroll-to-top" id="scrollToTop"></div>
     
     <footer>
-        <p>© 2024 堤 廉太郎</p>
+        <p>© 2025 堤 廉太郎</p>
     </footer>
     
-    <!-- モーダル -->
-    <div class="modal" id="workModal">
-        <div class="modal-close" id="modalClose"></div>
-        <div class="modal-content">
-            <div class="work-detail" id="workDetail">
-                <!-- 動的にコンテンツが挿入される -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- ライトボックス -->
-    <div class="lightbox" id="lightbox">
-        <div class="lightbox-close" id="lightboxClose"></div>
-        <div class="lightbox-nav lightbox-prev" id="lightboxPrev"></div>
-        <div class="lightbox-nav lightbox-next" id="lightboxNext"></div>
-        <div class="lightbox-content">
-            <img src="" alt="" class="lightbox-image" id="lightboxImage">
-        </div>
-    </div>
-    
     <script>
-        // 作品データ
-        const worksData = {
-            1: {
-                title: "There are me",
-                category: "picture",
-                year: "2024",
-                place: "渋谷",
-                image: "https://ren-atomo.github.io/about/There_are_me.jpg",
-                gallery: [],
-                video: null,
-                description: `私たちは複数の「自分」を生きている。
-この作品を制作した時、私には以下の自分がいた。
-・ビジネスの文脈で立つ自分
-・高校生として与えられた立場の自分
-・友人と過ごすプライベートの自分
-・それらを俯瞰する自分
-これらはどれが「本当の自分」なのだろうか。
-
-本作品は、渋谷駅メトロ改札口という、あらゆる背景・目的を持った人々が交差する場所で撮影した4枚の写真を用いている。それぞれの写真をRGB+モノトーンに分解し、極めて細かく切り刻んで織り込むことで、写真に複数の「瞬間」という要素を付加出来ないかと言う試みである。
-
-一つの身体に宿る複数の自分、その全てが相互に影響し合いながら「私」を形成している。時と場合によって人格を使い分けることが一般となった現代社会において、真の自分とは単一の実体ではなく、時と場所によって変化する複数の要素の総体であるのではないか。`
-            },
-            2: {
-                title: "Shibuya_No.01",
-                category: "picture",
-                year: "2024",
-                place: "渋谷",
-                image: "https://ren-atomo.github.io/about/image2.jpg",
-                gallery: [],
-                video: null,
-                description: `私たちは、ちゃんと街を見ることができているだろうか。
-
-渋谷という街は、朝・昼・夜・深夜で異なる表情を見せる。通学のための乗り換え駅として、アートの集積地として、ビジネスの拠点として。私たちはそれぞれの目的によって、街の一面しか見ていないのではないか。
-
-本作品は、渋谷の同一地点を異なる時間帯に撮影した4枚の写真を、RGB+モノトーンに分解し、極めて細かく切り刻んで織り込んでいる。"There are me"と同じ手法を用いることで、写真に複数の「瞬間」という要素を付加、時間軸からより多角的に街を捉えることを試みた。
-
-スクランブル交差点、SHIBUYA QWS、ラブホ街、パルコ、センター街。渋谷は無数の顔を持つ。それらを俯瞰的に、そしてミクロに見ることで、私たちは初めて「街をちゃんと見る」ことができるのではないだろうか。`
-            },
-            3: {
-                title: "hamon.exe",
-                category: "cg",
-                year: "2024-2025",
-                place: "-",
-                image: "https://ren-atomo.github.io/about/IMG_9995.jpg",
-                gallery: [
-                    "hamon - 1.jpeg",
-                    "hamon - 2.jpeg",
-                    "hamon - 3.jpeg",
-                    "hamon - 4.jpeg"
-                ],
-                video: "QAp48Rf5YqY",
-                description: `言語は便利だが、限界がある。ソシュールの言語記号論が示すように、シニフィエ(意味内容)とシニフィアン(記号)の間に必然的な関連性はないとされる。「リンゴ」という言葉は、その物質を知らない者には何も伝えない。言語は共通認識の上にあるものしか表現できず、精神的なものを完全には伝えられないという限界を持つ。
-
-ならば、言語を介さずに人と関わり合うことはできないだろうか。
-
-本作品は、マイクで拾った音をFFT解析し、リアルタイムで映像に変換するシステムである。音から言語という記号を剥ぎ取り、純粋な音として可視化することで、音を出すことのハードルを下げる。そこから生まれる即興的なセッションは、言葉では伝えきれない精神的なつながりを生む場となるのではないか。
-
-色彩心理があるように、音にも人間のDNAに刻まれた心理作用がある。この作品は、そうした無意識的な感覚を訓練し、非言語的に他者と関わり合うための空間を提供する。`
-            },
-            4: {
-                title: "hamon.exe × 勝川東さん",
-                category: "event",
-                year: "2024",
-                place: "月崎",
-                image: "https://ren-atomo.github.io/about/image1.jpg",
-                gallery: [
-                    "tuki - 1.jpeg",
-                    "tuki - 2.jpeg",
-                    "tuki - 3.jpeg"
-                ],
-                video: null,
-                description: `勝川東さん（折紙作家）とのコラボインスタレーション
-
-折り紙とは、祈りである。
-
-折り紙の起源は神事にある。清らかな環境でしか生まれない白い紙は、神に捧げるお供え物を包むために用いられた。「折る」という行為は、祈りを内包させる行為でもあった。
-
-折り紙作家・勝川東は、紙をくしゃくしゃにして偶発的な折り目を生み出し、そこから形を見出す。本コラボレーションでは、勝川東がその場で制作した折り紙をスクリーンとしてその上から、hamon.exeのシステムを用い、千葉県小湊鉄道・月崎駅での環境音（列車、車、人の足音、風、木々の揺れ）を映像に反映させた。
-
-折り紙における偶発性と、自然が生み出す音の偶発性。それらを重ね合わせることで、私たちは「偶然」の中に宿る美を見出せるのではないかと考えていた。結果として、この実践にはメディウムの扱い方などさまざまな課題があると分かった。
-
-このコラボレーションを通じて、独学では捉えきれない文脈があり、知らない手法が無数に存在することに気づいた。先人が築いてきた進歩に敬意を払い、その文脈を意識しなければ、先には進めない。`
-            },
-            5: {
-                title: "TEDxUTokyo \"でこぼこ\"",
-                category: "event",
-                year: "2025",
-                place: "東京大学",
-                image: "https://ren-atomo.github.io/about/tedxutokyo2025.jpeg",
-                gallery: [
-                    "ted - 1.jpeg",
-                    "ted - 2.jpeg",
-                    "ted - 3.jpeg"
-                ],
-                video: null,
-                description: `2025年現在、この地球では人類が文明を築いている。人類の3分の2がインターネットに接続し、物理的な距離を超え、互いとつながっている。人類は国を築き、それぞれの国がそれぞれの正義を掲げて社会システムを形成している。それぞれの文化を守りながら、時にそれが対立の原因となり、戦争が生まれている。また国の中でも、各々の人間が自己を認識し、多様な価値観を持ちながらも共存しようとしている。
-
-「そんな複雑化する世界を僕らはどう認識し、どう向き合えばよいのだろうか？」
-
-人間が認識できる情報量には限界がある。そのため僕らは、「日本人」や「学生」といったラベルで人を分類し、パターン化することで世界を理解しようとする。こうした認知の枠組みは必要なものだが、同時に私たちの視野を狭めるものでもある。目の前の人が持つ多層性や、社会の持つ重層的な構造≒「でこぼこ」を見えづらくしている。
-
-パターン化された認識と個別の体験は、どちらか一方だけがリアルなのではなく、どちらもリアルである。しかし現代社会では、効率性を重視するあまり、パターン化された関わり方が優位になっている。僕らは、他者との新たな関わり方を模索する必要がある。
-
-本ブースでは、hamon.exeのシステムを用いて、その「新たな関わり方」の一つの可能性を提示した。`
-            },
-            6: {
-                title: "音で遊ぶ会",
-                category: "vj",
-                year: "2025",
-                place: "下北沢",
-                image: "https://ren-atomo.github.io/about/play_sound.jpeg",
-                gallery: [
-                    "asobu - 1.jpeg",
-                    "asobu - 2.jpeg",
-                    "asobu - 3.jpeg",
-                    "asobu - 4.jpeg"
-                ],
-                video: null,
-                description: `近年、SNSが普及したことによって、声を通してのコミュニケーションが減少し、テキストベースでのコミュニケーションが一般となってきた。言語は物事の概要を伝えるのに非常に有効的だが、お互いの共通認識の上にない意識や感覚などを伝えにくいという欠点もある。
-
-hamon.exeはこれまで、広く開かれた空間で非言語的な関わり合いを生むためのツールとして機能してきた。しかし本イベントでは、その逆を試みた
-→よりクローズドで、精神的にも距離的にも密な空間を作ること。
-
-音から言語を切り離して純粋な音・音楽で他者と関わりあうことで、今まで軽視されやすかった非言語的感覚に対して、人々がより目を向けやすくなるのではないか。そして、心の底から人と関わる、内を開く。そうした深いつながりを、即興音楽を通じて体験する場を作りたかった。
-
-理論を抜きにしても、これはすごくいい時間だった。言葉では表しきれないつながりを、確かに感じることができた。`
-            },
-            7: {
-                title: "Unleash the Dream 出演",
-                category: "event",
-                year: "2025",
-                place: "サントリーホール",
-                image: "https://ren-atomo.github.io/about/unleash.jpg",
-                gallery: [
-                    "unle - 1.jpeg",
-                    "unle - 2.jpeg",
-                    "unle - 3.jpeg",
-                    "unle - 4.jpeg"
-                ],
-                video: "mKYNXUHWqBA",
-                description: `自分の生を意識したことはあるだろうか？
-
-私たちは、心臓が動いていなければ何もできない。生命活動も、芸術活動も、すべては心臓の鼓動の上に成り立っている。しかし日常において、私たちは自分が「生きている」ことを意識する瞬間は少ない。
-
-本パフォーマンスでは、事前に録音した心音をバックグラウンドで流し、その上にバイオリン(もも氏)の生演奏を重ねた。生を象徴する心音と、その上で成り立つ芸術活動としての音楽。この二層を重ね合わせることで、観客と演奏者の双方に「生きていること」への気づきを与えることを試みた。
-
-心音という、普段は意識されない音。その上に音楽を乗せるという行為は、私たち自身の存在の根源を問い直す試みである。`
-            }
-        };
+        // モバイルメニュー
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const scrollToTop = document.getElementById('scrollToTop');
         
-        // モーダル機能
-        const modal = document.getElementById('workModal');
-        const modalClose = document.getElementById('modalClose');
-        const workDetail = document.getElementById('workDetail');
-        const works = document.querySelectorAll('.work');
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
         
-        // ライトボックス要素
-        const lightbox = document.getElementById('lightbox');
-        const lightboxClose = document.getElementById('lightboxClose');
-        const lightboxPrev = document.getElementById('lightboxPrev');
-        const lightboxNext = document.getElementById('lightboxNext');
-        const lightboxImage = document.getElementById('lightboxImage');
-        
-        // 現在の画像インデックス
-        let currentLightboxIndex = 0;
-        let currentGalleryImages = [];
-        
-        works.forEach(work => {
-            work.addEventListener('click', function() {
-                const id = this.dataset.id;
-                const data = worksData[id];
-                
-                // ギャラリー画像リストを作成（メイン画像 + 追加画像）
-                currentGalleryImages = [data.image, ...data.gallery];
-                currentLightboxIndex = 0;
-                
-                // ギャラリーHTMLを生成
-                let galleryHTML = '';
-                if (data.gallery && data.gallery.length > 0) {
-                    galleryHTML = `
-                        <div class="work-gallery">
-                            ${data.gallery.map((img, index) => `
-                                <div class="gallery-item" data-index="${index + 1}">
-                                    <img src="${img}" alt="${data.title} - ${index + 1}">
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-                
-                // YouTube埋め込みHTMLを生成
-                let videoHTML = '';
-                if (data.video) {
-                    videoHTML = `
-                        <div class="work-video">
-                            <iframe 
-                                src="https://www.youtube.com/embed/${data.video}"
-                                title="${data.title} - YouTube"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                    `;
-                }
-                
-                workDetail.innerHTML = `
-                    <img src="${data.image}" alt="${data.title}" class="work-detail-hero" id="heroImage">
-                    <div class="work-detail-container">
-                        <div class="work-detail-header">
-                            <h2>${data.title}</h2>
-                            <div class="work-detail-meta">
-                                <span>${data.category}</span>
-                                <span>${data.year}</span>
-                                <span>${data.place}</span>
-                            </div>
-                        </div>
-                        <div class="work-detail-content">
-                            ${galleryHTML}
-                            <div class="work-detail-info">
-                                <div class="work-detail-description">${data.description}</div>
-                                ${videoHTML}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                // ヒーロー画像クリックでライトボックスを開く
-                const heroImage = document.getElementById('heroImage');
-                heroImage.addEventListener('click', function() {
-                    currentLightboxIndex = 0;
-                    openLightbox(currentGalleryImages[0]);
-                });
-                
-                // ギャラリーアイテムクリックでライトボックスを開く
-                const galleryItems = document.querySelectorAll('.gallery-item');
-                galleryItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        const index = parseInt(this.dataset.index);
-                        currentLightboxIndex = index;
-                        openLightbox(currentGalleryImages[index]);
-                    });
-                });
+        // モバイルメニューのリンククリックで閉じる
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
         
-        // ライトボックス機能
-        function openLightbox(imageSrc) {
-            lightboxImage.src = imageSrc;
-            lightbox.classList.add('active');
-        }
-        
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-        }
-        
-        function showPrevImage() {
-            currentLightboxIndex = (currentLightboxIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
-            lightboxImage.src = currentGalleryImages[currentLightboxIndex];
-        }
-        
-        function showNextImage() {
-            currentLightboxIndex = (currentLightboxIndex + 1) % currentGalleryImages.length;
-            lightboxImage.src = currentGalleryImages[currentLightboxIndex];
-        }
-        
-        // ライトボックスのイベントリスナー
-        lightboxClose.addEventListener('click', closeLightbox);
-        lightboxPrev.addEventListener('click', showPrevImage);
-        lightboxNext.addEventListener('click', showNextImage);
-        
-        // ライトボックス背景クリックで閉じる
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightbox();
+        // スクロールトップボタン
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTop.classList.add('show');
+            } else {
+                scrollToTop.classList.remove('show');
             }
         });
         
-        // キーボード操作
-        document.addEventListener('keydown', function(e) {
-            if (lightbox.classList.contains('active')) {
-                if (e.key === 'Escape') {
-                    closeLightbox();
-                } else if (e.key === 'ArrowLeft') {
-                    showPrevImage();
-                } else if (e.key === 'ArrowRight') {
-                    showNextImage();
-                }
-            } else if (modal.classList.contains('active')) {
-                if (e.key === 'Escape') {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            }
-        });
-        
-        modalClose.addEventListener('click', function() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-        
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+        scrollToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     </script>
 </body>
