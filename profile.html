@@ -170,16 +170,63 @@
             margin-bottom: 5px;
         }
         
-        .history-title {
+        .history-grade {
             font-size: 16px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .history-event {
+            margin-bottom: 12px;
+        }
+        
+        .history-date {
+            font-size: 12px;
+            color: #999;
+            margin-right: 10px;
+        }
+        
+        .history-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+            color: #333;
         }
         
         .history-description {
-            font-size: 14px;
-            line-height: 1.8;
+            font-size: 13px;
+            line-height: 1.6;
             color: #666;
+            margin-left: 70px;
+        }
+        
+        .history-link {
+            font-size: 12px;
+            color: #999;
+            text-decoration: none;
+            margin-left: 70px;
+            display: inline-block;
+            margin-top: 3px;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .history-link:hover {
+            color: #333;
+            border-bottom-color: #333;
+        }
+        
+        /* 受賞マーク */
+        .award-badge {
+            display: inline-block;
+            background: #333;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            border-radius: 2px;
         }
         
         /* SNSリンク */
@@ -263,6 +310,18 @@
             .history-item::before {
                 left: -18px;
             }
+            
+            .history-description,
+            .history-link {
+                margin-left: 0;
+            }
+            
+            .award-badge {
+                display: block;
+                width: fit-content;
+                margin-left: 0;
+                margin-top: 5px;
+            }
         }
     </style>
 </head>
@@ -312,51 +371,162 @@
             <h2 class="section-title">活動歴</h2>
             
             <div class="history">
+                <!-- 中学時代 -->
                 <div class="history-item">
-                    <div class="history-year">2020</div>
-                    <div class="history-title">芝浦工業大学附属中学校 入学</div>
-                    <div class="history-description">
-                        プログラミングへの興味から、情報教育に強い芝浦工大附属へ。電子技術研究部に所属し、プログラミングの基礎を学ぶ。
+                    <div class="history-year">2020-2023</div>
+                    <div class="history-grade">中学時代</div>
+                    <div class="history-event">
+                        <div class="history-title">芝浦工業大学附属中学校</div>
+                        <div class="history-description">
+                            電子技術研究部から美術部へ転部。技術と芸術の融合を模索し始める。
+                        </div>
                     </div>
                 </div>
                 
+                <!-- 高校1年 -->
                 <div class="history-item">
-                    <div class="history-year">2021</div>
-                    <div class="history-title">美術部への転部</div>
-                    <div class="history-description">
-                        技術的な制約を超えた自由な表現を求めて美術部へ。「ゲームもアートの一つ」という視点から、技術と芸術の融合を模索し始める。
+                    <div class="history-year">2023</div>
+                    <div class="history-grade">高校1年</div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2023.08.28</span>
+                        <div class="history-title">HADO公認チーム Step Up⤴︎⤴︎ 立ち上げ</div>
+                        <div class="history-description">リーダーとしてチームを創設</div>
+                        <a href="https://hado-official.com/tournament/teamdetail/step-up/" class="history-link" target="_blank">
+                            hado-official.com
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2023.09.03</span>
+                        <div class="history-title">HADO ROOKIES CUP #50 優勝</div>
+                        <div class="history-description">Step Up⤴︎⤴︎として出場し、優勝を果たす</div>
+                        <a href="https://www.youtube.com/watch?v=O7Jp_qb6WPE" class="history-link" target="_blank">
+                            youtube.com
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024.02.18</span>
+                        <div class="history-title">探求Cafe 副代表として企画・主催</div>
+                        <div class="history-description">札幌・東京・福井・香川の4か所で同時開催。全国の中高生が興味・関心を共有できる学びの場を創出</div>
+                        <a href="https://tanq-cafe.studio.site/" class="history-link" target="_blank">
+                            tanq-cafe.studio.site
+                        </a>
                     </div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-year">2022-2023</div>
-                    <div class="history-title">ビジネスコンテストへの挑戦</div>
-                    <div class="history-description">
-                        実装から企画・ビジネスモデル構築へと興味が拡大。「雰囲気マップ」（色と音で雰囲気を可視化する地図アプリ）を企画。
-                    </div>
-                </div>
-                
+                <!-- 高校2年 -->
                 <div class="history-item">
                     <div class="history-year">2024</div>
-                    <div class="history-title">The 0th Pitch 主催</div>
-                    <div class="history-description">
-                        ビジネス用語禁止のピッチイベントを主催。形式的な関わり合いへの疑問から、より本質的なコミュニケーションの場を創出。
+                    <div class="history-grade">高校2年</div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024.04.06</span>
+                        <div class="history-title">HADO 2024 SPRING CUP 予選大会#2 3位入賞</div>
+                        <div class="history-description">Step Up⤴︎⤴︎として出場</div>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024.04.13〜</span>
+                        <div class="history-title">The 0th Pitch 代表として企画・主催</div>
+                        <div class="history-description">「世界一ハードルが低いピッチ」として計6回開催。夢を語る場を全国規模で展開</div>
+                        <a href="https://the-0th-pitch.studio.site/" class="history-link" target="_blank">
+                            the-0th-pitch.studio.site
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024.04.21</span>
+                        <div class="history-title">HADO 2024 SPRING CUP 本戦出場</div>
+                        <div class="history-description">Step Up⤴︎⤴︎として出場</div>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024年度</span>
+                        <div class="history-title">任意団体HoPer 立ち上げ・代表就任</div>
+                        <div class="history-description">The 0th Pitchや各プロジェクトの運営</div>
+                        <a href="https://hoper-grp.studio.site/" class="history-link" target="_blank">
+                            hoper-grp.studio.site
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024.09.21-23</span>
+                        <div class="history-title">「蛹」展 作品展示</div>
+                        <div class="history-description">武蔵野美術大学・千葉工業大学・芝浦工業大学の学生をメインメンバーとした展示会に参加</div>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2024年度</span>
+                        <div class="history-title">その他の活動</div>
+                        <div class="history-description">
+                            • 高校生みんなの夢AWARD全国大会 1次審査突破<br>
+                            • AITRIOS｜Meet Up（Sony Semiconductor Solutions Corporation主催）定期参加<br>
+                            • HADO公認チームStep Up⤴︎⤴︎ リーダー継続
+                        </div>
                     </div>
                 </div>
                 
+                <!-- 高校3年 -->
                 <div class="history-item">
-                    <div class="history-year">2024-2025</div>
-                    <div class="history-title">起業とアートへの転換</div>
-                    <div class="history-description">
-                        株式会社設立のスタートメンバーとして参画後、退社。紆余曲折を経て、アートという文脈で人と人との新たな関わり方を探求し始める。
+                    <div class="history-year">2025</div>
+                    <div class="history-grade">高校3年</div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025.04.27</span>
+                        <div class="history-title">TEDxUTokyo2025 "でこぼこ" 出展</div>
+                        <div class="history-description">"hamon"というブース名で出展</div>
+                        <a href="https://events.tedxutokyo.com/main2025/contents.html" class="history-link" target="_blank">
+                            events.tedxutokyo.com
+                        </a>
                     </div>
-                </div>
-                
-                <div class="history-item">
-                    <div class="history-year">2024-現在</div>
-                    <div class="history-title">作品制作と展示活動</div>
-                    <div class="history-description">
-                        「hamon.exe」をはじめとする作品制作。TEDxUTokyoでの展示、音で遊ぶ会でのVJ、サントリーホールでのパフォーマンスなど、多様な場で活動を展開。
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025.05.05</span>
+                        <div class="history-title">「音で遊ぶ会」主催</div>
+                        <div class="history-description">自身の作品hamonをベースとしたイベントを10人規模で開催</div>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025.05.28</span>
+                        <div class="history-title">放課後カフェ 主催</div>
+                        <div class="history-description">学生（主に高校生）のサードプレイスを生み出すことを目的として開催</div>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025.07.20</span>
+                        <div class="history-title">オトフェス2025 in Oos ワークショップ講師</div>
+                        <div class="history-description">"つながり"というタイトルでワークショップを実施</div>
+                        <a href="https://myogadani-lab.com/" class="history-link" target="_blank">
+                            myogadani-lab.com
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025.08.02-09</span>
+                        <div class="history-title">MIRAISENS,Inc.主催ハッカソン参加
+                            <span class="award-badge">無駄賞 受賞</span>
+                        </div>
+                        <div class="history-description">
+                            デュアル振動アクチュエータ × 自由な発想 ハッカソン（痛快技術株式会社様からの紹介）<br>
+                            株式会社無駄の藤原麻里奈さんから無駄賞を受賞
+                        </div>
+                        <a href="https://tsu-x.connpass.com/event/356692/" class="history-link" target="_blank">
+                            tsu-x.connpass.com
+                        </a>
+                        <a href="https://www.canva.com/design/DAGvcPAd1H0/CpzylDRrvpYrsOWRsfBI9A/view?utm_content=DAGvcPAd1H0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h913777d33f" class="history-link" target="_blank">
+                            発表スライド（Canva）
+                        </a>
+                    </div>
+                    
+                    <div class="history-event">
+                        <span class="history-date">2025年度</span>
+                        <div class="history-title">継続的な活動</div>
+                        <div class="history-description">
+                            • AITRIOS｜Meet Up 定期参加継続<br>
+                            • HADO公認チームStep Up⤴︎⤴︎ リーダー継続
+                        </div>
                     </div>
                 </div>
             </div>
