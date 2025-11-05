@@ -18,6 +18,11 @@
             line-height: 1.8;
         }
         
+        /* スムーススクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         /* ヘッダー */
         header {
             position: fixed;
@@ -45,6 +50,17 @@
             font-weight: normal;
             text-decoration: none;
             color: #333;
+            transition: opacity 0.3s ease;
+        }
+        
+        .logo:hover {
+            opacity: 0.6;
+        }
+        
+        /* デスクトップナビゲーション */
+        nav {
+            display: flex;
+            align-items: center;
         }
         
         nav a {
@@ -52,11 +68,115 @@
             color: #333;
             font-size: 14px;
             margin-left: 30px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        /* ホバーアニメーション */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #333;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* 現在のページをハイライト */
+        nav a.current {
+            font-weight: 500;
+        }
+        
+        nav a.current::after {
+            width: 100%;
+        }
+        
+        /* モバイルメニューボタン */
+        .mobile-menu-btn {
+            display: none;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .mobile-menu-btn span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn span:nth-child(1) {
+            top: 0;
+        }
+        
+        .mobile-menu-btn span:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .mobile-menu-btn span:nth-child(3) {
+            bottom: 0;
+        }
+        
+        /* メニュー開いた時のアニメーション */
+        .mobile-menu-btn.active span:nth-child(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+        
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(3) {
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+        
+        /* モバイルメニュー */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 99;
+            transition: right 0.3s ease;
+            padding: 80px 20px 40px;
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 15px 0;
+            font-size: 16px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
             transition: opacity 0.3s ease;
         }
         
-        nav a:hover {
+        .mobile-menu a:hover {
             opacity: 0.6;
+        }
+        
+        .mobile-menu a.current {
+            font-weight: 500;
         }
         
         /* プロフィールコンテナ */
@@ -250,6 +370,47 @@
             color: white;
         }
         
+        /* ページトップへ戻るボタン */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 90;
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-to-top.show {
+            display: flex;
+        }
+        
+        .scroll-to-top:hover {
+            background: #333;
+            border-color: #333;
+        }
+        
+        .scroll-to-top::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #333;
+            border-right: 2px solid #333;
+            transform: rotate(-45deg);
+            margin-top: 5px;
+        }
+        
+        .scroll-to-top:hover::before {
+            border-color: white;
+        }
+        
         /* フッター */
         footer {
             text-align: center;
@@ -265,19 +426,12 @@
                 padding: 15px 20px;
             }
             
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
             nav {
-                margin-top: 10px;
+                display: none;
             }
             
-            nav a {
-                margin-left: 0;
-                margin-right: 20px;
-                font-size: 13px;
+            .mobile-menu-btn {
+                display: block;
             }
             
             .profile-container {
@@ -322,6 +476,13 @@
                 margin-left: 0;
                 margin-top: 5px;
             }
+            
+            .scroll-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
@@ -332,11 +493,24 @@
             <nav>
                 <a href="index.html#works">Works</a>
                 <a href="philosophy.html">Philosophy</a>
-                <a href="profile.html">Profile</a>
+                <a href="profile.html" class="current">Profile</a>
                 <a href="experiments.html">Experiments</a>
             </nav>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </header>
+    
+    <!-- モバイルメニュー -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#works">Works</a>
+        <a href="philosophy.html">Philosophy</a>
+        <a href="profile.html" class="current">Profile</a>
+        <a href="experiments.html">Experiments</a>
+    </div>
     
     <div class="profile-container">
         <div class="profile-header">
@@ -529,8 +703,11 @@
         </div>
     </div>
     
+    <!-- トップへ戻るボタン -->
+    <div class="scroll-to-top" id="scrollToTop"></div>
+    
     <footer>
-        <p>© 2024 堤 廉太郎</p>
+        <p>© 2025 堤 廉太郎</p>
     </footer>
     
     <script>
@@ -549,6 +726,42 @@
         }
         
         calculateAge();
+        
+        // モバイルメニュー
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const scrollToTop = document.getElementById('scrollToTop');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        // モバイルメニューのリンククリックで閉じる
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // スクロールトップボタン
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTop.classList.add('show');
+            } else {
+                scrollToTop.classList.remove('show');
+            }
+        });
+        
+        scrollToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>
