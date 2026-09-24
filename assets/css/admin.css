@@ -1,0 +1,565 @@
+/* 管理ページ（admin.html） */
+
+:root {
+    --ink: #333;
+    --sub: #888;
+    --line: #e4e4e4;
+    --soft: #f6f6f6;
+    --bg: #fff;
+    --danger: #b3261e;
+    --ok: #2e7d32;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "游ゴシック", "Yu Gothic", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 14px;
+    padding-bottom: 90px;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* ヘッダー */
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 32px;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+}
+
+.admin-title {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.admin-tabs button {
+    background: none;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    color: var(--sub);
+}
+
+.admin-tabs button.active {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+}
+
+.admin-view-site {
+    margin-left: auto;
+    color: var(--sub);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+}
+
+.admin-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+/* 共通パーツ */
+h2.section-heading {
+    font-size: 18px;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+}
+
+h3.sub-heading {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 28px 0 12px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+    background: var(--ink);
+    color: #fff;
+}
+
+.btn-primary {
+    background: var(--ink);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.btn-danger {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.btn-danger:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+.btn-small {
+    padding: 3px 10px;
+    font-size: 12px;
+}
+
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.icon-btn:hover {
+    border-color: var(--ink);
+}
+
+.icon-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.icon-btn.remove:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    font-size: 12px;
+    color: var(--sub);
+    margin-bottom: 4px;
+}
+
+.field input[type="text"],
+.field input[type="url"],
+.field input[type="date"],
+.field input[type="password"],
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    border-radius: 0;
+}
+
+.field textarea {
+    resize: vertical;
+    line-height: 1.8;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+}
+
+.field .hint {
+    font-size: 12px;
+    color: var(--sub);
+    margin-top: 4px;
+}
+
+.field.invalid input {
+    border-color: var(--danger);
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0 16px;
+}
+
+.card {
+    border: 1px solid var(--line);
+    padding: 20px;
+    margin-bottom: 16px;
+    background: var(--bg);
+}
+
+.card-soft {
+    background: var(--soft);
+    border-color: transparent;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.card-head .card-title {
+    flex: 1;
+    font-weight: 500;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inline-list-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.inline-list-item input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+}
+
+.empty {
+    color: var(--sub);
+    font-size: 13px;
+    padding: 12px 0;
+}
+
+/* 作品タブ */
+.works-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.works-list {
+    position: sticky;
+    top: 80px;
+}
+
+.works-list-items {
+    list-style: none;
+    margin-bottom: 12px;
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+}
+
+.works-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.works-list-item:hover {
+    background: var(--soft);
+}
+
+.works-list-item.selected {
+    border-color: var(--ink);
+}
+
+.works-list-item img,
+.works-list-item .thumb-empty {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    background: var(--soft);
+    flex-shrink: 0;
+}
+
+.works-list-item .name {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.works-list-item .order {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.works-list-item .order .icon-btn {
+    width: 22px;
+    height: 20px;
+    font-size: 10px;
+}
+
+.image-field {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.image-preview {
+    width: 200px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--soft);
+    display: block;
+}
+
+.image-field .image-controls {
+    flex: 1;
+    min-width: 220px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.gallery-cell img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--soft);
+    display: block;
+}
+
+.gallery-cell .gallery-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.gallery-cell .gallery-actions .icon-btn {
+    flex: 1;
+    height: 24px;
+}
+
+.file-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-button input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.pending-badge {
+    display: inline-block;
+    font-size: 11px;
+    background: var(--ink);
+    color: #fff;
+    padding: 0 6px;
+    margin-left: 6px;
+}
+
+.danger-zone {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+/* 接続設定 */
+.connect {
+    max-width: 640px;
+}
+
+.connect ol {
+    padding-left: 20px;
+    margin: 12px 0 24px;
+    color: #555;
+}
+
+.connect ol li {
+    margin-bottom: 6px;
+}
+
+.connect code {
+    background: var(--soft);
+    padding: 1px 5px;
+    font-size: 12px;
+}
+
+.connect a {
+    color: var(--ink);
+}
+
+.checkbox {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    background: var(--soft);
+    border-left: 3px solid var(--ink);
+    white-space: pre-line;
+}
+
+.message.error {
+    border-left-color: var(--danger);
+    color: var(--danger);
+}
+
+/* 保存バー */
+.save-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 32px;
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid var(--line);
+}
+
+.save-status {
+    font-size: 13px;
+    color: var(--sub);
+    white-space: nowrap;
+}
+
+.save-status.dirty {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.commit-message {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 80px;
+    transform: translateX(-50%);
+    z-index: 30;
+    max-width: calc(100% - 32px);
+    padding: 12px 20px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 13px;
+    white-space: pre-line;
+}
+
+.toast.error {
+    background: var(--danger);
+}
+
+/* スマホ */
+@media (max-width: 800px) {
+    .admin-header {
+        padding: 12px 16px;
+        gap: 10px;
+    }
+
+    .admin-tabs {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .admin-main {
+        padding: 20px 16px;
+    }
+
+    .works-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .works-list {
+        position: static;
+    }
+
+    .works-list-items {
+        max-height: 260px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .save-bar {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+    }
+
+    .commit-message {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .save-bar .btn {
+        margin-left: auto;
+    }
+
+    .toast {
+        bottom: 130px;
+    }
+}
