@@ -1,0 +1,241 @@
+/* プロフィールページ */
+
+body {
+    line-height: 1.8;
+}
+
+.profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+}
+
+/* プロフィールヘッダー */
+.profile-header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.profile-name {
+    font-size: 36px;
+    font-weight: normal;
+    letter-spacing: 0.15em;
+    margin-bottom: 15px;
+}
+
+.profile-name-en {
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 0.08em;
+    margin-bottom: 30px;
+}
+
+/* 基本情報 */
+.profile-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #666;
+}
+
+.profile-info-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.profile-info-label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* セクション */
+.profile-section {
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: normal;
+    letter-spacing: 0.08em;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* アーティストステートメント */
+.artist-statement {
+    font-size: 15px;
+    line-height: 2.2;
+    color: #444;
+    text-align: justify;
+    background: #f8f8f8;
+    padding: 30px;
+    margin-bottom: 60px;
+}
+
+/* 活動歴 */
+.history {
+    position: relative;
+    padding-left: 30px;
+}
+
+.history::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: #e0e0e0;
+}
+
+.history-item {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+.history-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background: #333;
+    border-radius: 50%;
+}
+
+.history-year {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.history-grade {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.history-event {
+    margin-bottom: 12px;
+}
+
+.history-date {
+    font-size: 12px;
+    color: #999;
+    margin-right: 10px;
+}
+
+.history-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: #333;
+}
+
+.history-description {
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-line;
+    color: #666;
+    margin-left: 70px;
+}
+
+.history-link {
+    font-size: 12px;
+    color: #999;
+    text-decoration: none;
+    margin-left: 70px;
+    display: inline-block;
+    margin-top: 3px;
+    border-bottom: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.history-link:hover {
+    color: #333;
+    border-bottom-color: #333;
+}
+
+/* 受賞マーク */
+.award-badge {
+    display: inline-block;
+    background: #333;
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    border-radius: 2px;
+}
+
+/* SNSリンク */
+.social-links {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.social-link {
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 20px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: #333;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 100px 20px 60px;
+    }
+
+    .profile-name {
+        font-size: 28px;
+    }
+
+    .profile-info {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .artist-statement {
+        padding: 20px;
+        font-size: 14px;
+    }
+
+    .history {
+        padding-left: 20px;
+    }
+
+    .history::before {
+        left: 3px;
+    }
+
+    .history-item::before {
+        left: -18px;
+    }
+
+    .history-description,
+    .history-link {
+        margin-left: 0;
+    }
+
+    .award-badge {
+        display: block;
+        width: fit-content;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}

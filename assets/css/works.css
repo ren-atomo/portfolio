@@ -1,0 +1,570 @@
+/* 作品一覧（トップページ）と作品詳細 */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 40px 40px;
+}
+
+/* Masonryグリッド */
+.works-mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 15px;
+    margin-bottom: 80px;
+}
+
+.work {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+.work:hover {
+    transform: scale(0.98);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* グリッドでの大きさ（data/works.js の size で指定）
+   small = 1×1 / tall = 縦長 1×2 / big = 2×2 / hero = 2×3
+   作品は並び順どおりに左上から詰めて配置されます */
+.work.size-tall { grid-row: span 2; }
+.work.size-big  { grid-column: span 2; grid-row: span 2; }
+.work.size-hero { grid-column: span 2; grid-row: span 3; }
+
+.work-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.work-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 25px;
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.work:hover .work-overlay {
+    transform: translateY(0);
+}
+
+.work-title {
+    font-size: 15px;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.work.size-big .work-title,
+.work.size-hero .work-title {
+    font-size: 20px;
+}
+
+.work-meta {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* 思想へのリンク */
+.home-philosophy {
+    text-align: center;
+    padding: 100px 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.home-philosophy-link {
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #333;
+    padding-bottom: 2px;
+    transition: opacity 0.3s ease;
+}
+
+.home-philosophy-link:hover {
+    opacity: 0.6;
+}
+
+/* モーダル */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 1000;
+    display: none;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    width: 100%;
+}
+
+.modal-close {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+}
+
+.modal-close::before,
+.modal-close::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 1px;
+    background: #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.modal-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 作品ナビゲーション */
+.work-navigation {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+}
+
+.work-nav-prev {
+    left: 20px;
+}
+
+.work-nav-next {
+    right: 20px;
+}
+
+.work-nav-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.work-nav-btn:hover {
+    background: #333;
+    border-color: #333;
+}
+
+.work-nav-btn::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #333;
+    border-right: 2px solid #333;
+}
+
+.work-nav-btn:hover::before {
+    border-color: white;
+}
+
+.work-nav-prev .work-nav-btn::before {
+    transform: rotate(-135deg);
+    margin-left: 5px;
+}
+
+.work-nav-next .work-nav-btn::before {
+    transform: rotate(45deg);
+    margin-right: 5px;
+}
+
+/* 詳細ページのスタイル */
+.work-detail {
+    width: 100%;
+}
+
+/* フルサイズ画像 */
+.work-detail-hero {
+    width: 100%;
+    height: 80vh;
+    object-fit: contain;
+    background: #f5f5f5;
+    cursor: zoom-in;
+}
+
+/* 詳細情報全体のコンテナ */
+.work-detail-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 40px;
+}
+
+/* タイトルとメタ情報（上部） */
+.work-detail-header {
+    margin-bottom: 40px;
+}
+
+.work-detail-header h2 {
+    font-size: 32px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+}
+
+.work-detail-meta {
+    font-size: 14px;
+    color: #666;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.work-detail-meta span {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.work-detail-meta span::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: #999;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.work-detail-meta span:first-child::before {
+    display: none;
+}
+
+/* コンテンツエリア（ギャラリーと説明） */
+.work-detail-content {
+    display: flex;
+    gap: 40px;
+}
+
+/* 追加写真ギャラリー（左側） */
+.work-gallery {
+    flex: 1;
+    max-width: 300px;
+}
+
+.gallery-item {
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover {
+    opacity: 0.8;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 説明（右側） */
+.work-detail-info {
+    flex: 2;
+}
+
+.work-detail-description {
+    font-size: 15px;
+    line-height: 2;
+    white-space: pre-wrap;
+    color: #444;
+    margin-bottom: 40px;
+}
+
+/* YouTube埋め込み */
+.work-video {
+    margin-top: 40px;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+
+.work-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* 関連ページリンク */
+.related-links {
+    margin-top: 60px;
+    padding: 30px;
+    background: #f8f8f8;
+    text-align: center;
+}
+
+.related-links-title {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+}
+
+.related-links-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.related-link-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    border: 1px solid #333;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.related-link-btn:hover {
+    background: #333;
+    color: white;
+}
+
+/* ライトボックス */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+.lightbox-close::before,
+.lightbox-close::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    background: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.lightbox-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* ライトボックス ナビゲーション */
+.lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-prev {
+    left: 30px;
+}
+
+.lightbox-next {
+    right: 30px;
+}
+
+.lightbox-nav::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+}
+
+.lightbox-prev::before {
+    transform: rotate(-135deg);
+    margin-left: 5px;
+}
+
+.lightbox-next::before {
+    transform: rotate(45deg);
+    margin-right: 5px;
+}
+
+/* レスポンシブ */
+@media (max-width: 1024px) {
+    .container {
+        padding: 100px 30px 40px;
+    }
+
+    .works-mosaic {
+        grid-auto-rows: 160px;
+    }
+
+    .work-detail-content {
+        flex-direction: column;
+    }
+
+    .work-gallery {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 80px 20px 40px;
+    }
+
+    .works-mosaic {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 140px;
+        gap: 10px;
+    }
+
+    /* スマホでは大きい作品は2×2、それ以外は1×1 */
+    .work.size-big,
+    .work.size-hero {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .work.size-tall {
+        grid-row: span 1;
+    }
+
+    .modal-close {
+        top: 20px;
+        right: 20px;
+    }
+
+    .work-nav-prev {
+        left: 10px;
+    }
+
+    .work-nav-next {
+        right: 10px;
+    }
+
+    .work-nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .work-detail-hero {
+        height: 50vh;
+    }
+
+    .work-detail-container {
+        padding: 0 20px;
+        margin: 40px auto;
+    }
+
+    .work-detail-header h2 {
+        font-size: 24px;
+    }
+
+    .work-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .lightbox-prev {
+        left: 10px;
+    }
+
+    .lightbox-next {
+        right: 10px;
+    }
+
+    .related-links-buttons {
+        flex-direction: column;
+    }
+
+    .related-link-btn {
+        width: 100%;
+    }
+}

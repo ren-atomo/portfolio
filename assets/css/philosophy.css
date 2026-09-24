@@ -1,0 +1,119 @@
+/* 思想ページ */
+
+body {
+    line-height: 2;
+}
+
+.philosophy-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+}
+
+.philosophy-title {
+    font-size: 32px;
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 60px;
+    letter-spacing: 0.1em;
+}
+
+/* セクション */
+.philosophy-section {
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    letter-spacing: 0.05em;
+}
+
+/* 本文スタイル */
+.philosophy-text {
+    font-size: 15px;
+    line-height: 2.2;
+    color: #444;
+    text-align: justify;
+    margin-bottom: 25px;
+}
+
+.philosophy-text.indent {
+    padding-left: 1em;
+}
+
+.philosophy-text.emphasis {
+    font-weight: 500;
+    color: #222;
+    margin: 30px 0;
+}
+
+/* リスト */
+.concept-list {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.concept-list li {
+    list-style: none;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #444;
+}
+
+.concept-list li::before {
+    content: '・';
+    position: absolute;
+    left: -15px;
+}
+
+/* 引用風のブロック */
+.thought-block {
+    background: #f8f8f8;
+    padding: 20px 25px;
+    margin: 30px 0;
+    border-left: 3px solid #ddd;
+    font-size: 14px;
+    line-height: 2;
+}
+
+/* リンク */
+.back-link {
+    display: inline-block;
+    margin-top: 60px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #333;
+    padding-bottom: 2px;
+    transition: opacity 0.3s ease;
+}
+
+.back-link:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .philosophy-container {
+        padding: 100px 20px 60px;
+    }
+
+    .philosophy-title {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .philosophy-text {
+        font-size: 14px;
+        text-align: left;
+    }
+}
