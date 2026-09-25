@@ -15,6 +15,14 @@
 
 window.EXPERIMENTS = [
     {
+        date: "2026.09.25",
+        title: "blenderアニメーション",
+        tags: ["blender"],
+        description: `初めて触った、blenderアニメーション
+ハッカソンのプレゼンテーションにて使用`,
+        video: "https://youtu.be/7wAc4UHQARU"
+    },
+    {
         date: "2025.10.23",
         title: "VJ練習",
         tags: ["TouchDesigner", "テルミン"],
