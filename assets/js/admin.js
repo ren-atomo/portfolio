@@ -678,7 +678,7 @@
                 field("年", work, "year", { placeholder: "2026" }),
                 field("場所", work, "place", { placeholder: "なければ空欄" })
             ),
-            field("トップでの大きさ", work, "size", { options: SIZES, hint: "並び順と大きさの組み合わせで、すき間ができることがあります。保存後にトップで確認してください。" }),
+            field("トップでの大きさ", work, "size", { options: SIZES, hint: "すき間には後ろの小さい作品が自動で詰めて入ります。そのため並びが少し前後することがあります。" }),
 
             el("h3", { class: "sub-heading", text: "メイン画像" }),
             el("div", { class: "image-field" },
