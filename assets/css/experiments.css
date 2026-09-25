@@ -88,6 +88,46 @@ body {
 }
 
 /* YouTube埋め込み */
+/* 写真 */
+.experiment-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.experiment-photos.single {
+    grid-template-columns: 1fr;
+}
+
+.experiment-photo {
+    display: block;
+    padding: 0;
+    border: none;
+    background: #f5f5f5;
+    cursor: zoom-in;
+    overflow: hidden;
+}
+
+.experiment-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.experiment-photos.single .experiment-photo img {
+    aspect-ratio: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    background: #f5f5f5;
+}
+
+.experiment-photo:hover img {
+    opacity: 0.85;
+}
+
 .experiment-video {
     position: relative;
     padding-bottom: 56.25%; /* 16:9 */
