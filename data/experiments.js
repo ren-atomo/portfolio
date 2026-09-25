@@ -9,6 +9,7 @@
 //  title       : タイトル
 //  tags        : タグ（なければ []）
 //  description : 説明（なければ ""）
+//  images      : 写真（なければ書かなくてよい。例: ["images/experiments/2025-10-23/1.jpg"]）
 //  video       : YouTube の URL か動画ID（なければ ""）
 //
 

@@ -109,9 +109,16 @@ assets/js/          動き（site.js がヘッダー・メニュー・フッタ�
         title: "タイトル",
         tags: ["TouchDesigner"],
         description: "説明",
-        video: "https://www.youtube.com/watch?v=xxxxxxxxxxx"
+        images: [                                   // 写真（なければこの行から ] までを消す）
+            "images/experiments/2026-09-24/1.jpg",
+            "images/experiments/2026-09-24/2.jpg"
+        ],
+        video: "https://www.youtube.com/watch?v=xxxxxxxxxxx"   // なければ ""
     },
 ```
+
+写真だけ、動画だけ、両方、どれでも登録できます。写真は `images/experiments/<日付>/` に置きます。
+管理ページからなら、日付を入れて「写真を追加」で選ぶだけで、縮小・保存までまとめて行われます。
 
 ## 活動歴を追加する
 

@@ -233,13 +233,18 @@
             }))
         }),
 
-        experiments: list => list.map(e => ({
-            date: str(e.date),
-            title: str(e.title),
-            tags: (e.tags || []).map(t => str(t).trim()).filter(Boolean),
-            description: str(e.description),
-            video: str(e.video).trim()
-        })),
+        experiments: list => list.map(e => {
+            const out = {
+                date: str(e.date),
+                title: str(e.title),
+                tags: (e.tags || []).map(t => str(t).trim()).filter(Boolean),
+                description: str(e.description)
+            };
+            const images = (e.images || []).map(g => str(g).trim()).filter(Boolean);
+            if (images.length) out.images = images;
+            out.video = str(e.video).trim();
+            return out;
+        }),
 
         philosophy: p => ({
             title: str(p.title),
@@ -328,6 +333,9 @@
         for (const w of state.data.works || []) {
             if (w.image) set.add(w.image.trim());
             for (const g of w.gallery || []) set.add(String(g).trim());
+        }
+        for (const e of state.data.experiments || []) {
+            for (const g of e.images || []) set.add(String(g).trim());
         }
         return set;
     }
@@ -454,8 +462,8 @@
         });
     }
 
-    function nextImagePath(workId) {
-        const dir = `images/works/${workId}/`;
+    // dir（例: "images/works/hamon/"）の中で、次の番号のファイル名を返す
+    function nextImagePath(dir) {
         const used = [...state.treePaths, ...state.pending.keys(), ...referencedPaths()];
         let max = 0;
         for (const p of used) {
@@ -466,17 +474,32 @@
         return `${dir}${max + 1}.jpg`;
     }
 
+    // 作品の写真は images/works/<id>/ に保存する
     async function addImages(work, fileList) {
         const id = str(work.id).trim();
         if (!/^[a-z0-9][a-z0-9-]*$/i.test(id)) {
             showToast("先に id を半角英数字で入れてください（写真の保存先フォルダ名になります）", true);
             return [];
         }
+        return addImagesTo(`images/works/${id}/`, fileList);
+    }
+
+    // 実験の写真は images/experiments/<日付>/ に保存する
+    async function addExperimentImages(entry, fileList) {
+        const digits = str(entry.date).match(/\d+/g);
+        if (!digits || digits.join("").length < 4) {
+            showToast("先に日付を入れてください（写真の保存先フォルダ名になります）", true);
+            return [];
+        }
+        return addImagesTo(`images/experiments/${digits.join("-")}/`, fileList);
+    }
+
+    async function addImagesTo(dir, fileList) {
         const paths = [];
         for (const file of fileList) {
             try {
                 const blob = await resizeImage(file);
-                const path = nextImagePath(id);
+                const path = nextImagePath(dir);
                 state.pending.set(path, await blobToBase64(blob));
                 state.previews.set(path, URL.createObjectURL(blob));
                 paths.push(path);
@@ -581,6 +604,34 @@
         return wrap;
     }
 
+    // 写真の一覧（並び替え・外す）と、追加ボタン
+    function galleryEditor(list, { emptyText, removeTitle, onAdd }) {
+        const grid = el("div", { class: "gallery-grid" });
+        const draw = () => {
+            grid.replaceChildren(...list.map((path, i) => el("div", { class: "gallery-cell" },
+                el("img", { src: imageSrc(path), alt: "", loading: "lazy", title: path }),
+                el("div", { class: "gallery-actions" },
+                    el("button", { type: "button", class: "icon-btn", text: "←", title: "前へ", disabled: i === 0,
+                        onclick: () => { moveItem(list, i, -1); draw(); updateSaveBar(); } }),
+                    el("button", { type: "button", class: "icon-btn", text: "→", title: "後ろへ", disabled: i === list.length - 1,
+                        onclick: () => { moveItem(list, i, 1); draw(); updateSaveBar(); } }),
+                    el("button", { type: "button", class: "icon-btn remove", text: "×", title: removeTitle,
+                        onclick: () => { list.splice(i, 1); draw(); updateSaveBar(); } })
+                )
+            )));
+            if (!list.length) grid.append(el("p", { class: "empty", text: emptyText }));
+        };
+        draw();
+        return el("div", {},
+            grid,
+            fileButton("+ 写真を追加（複数選べます）", true, async files => {
+                list.push(...await onAdd(files));
+                draw();
+                updateSaveBar();
+            })
+        );
+    }
+
     function fileButton(label, multiple, onFiles) {
         const input = el("input", { type: "file", accept: "image/*", multiple });
         input.addEventListener("change", async () => {
@@ -646,23 +697,6 @@
             updateSaveBar();
         });
 
-        const galleryGrid = el("div", { class: "gallery-grid" });
-        const drawGallery = () => {
-            galleryGrid.replaceChildren(...work.gallery.map((path, i) => el("div", { class: "gallery-cell" },
-                el("img", { src: imageSrc(path), alt: "", loading: "lazy", title: path }),
-                el("div", { class: "gallery-actions" },
-                    el("button", { type: "button", class: "icon-btn", text: "←", title: "前へ", disabled: i === 0,
-                        onclick: () => { moveItem(work.gallery, i, -1); drawGallery(); updateSaveBar(); } }),
-                    el("button", { type: "button", class: "icon-btn", text: "→", title: "後ろへ", disabled: i === work.gallery.length - 1,
-                        onclick: () => { moveItem(work.gallery, i, 1); drawGallery(); updateSaveBar(); } }),
-                    el("button", { type: "button", class: "icon-btn remove", text: "×", title: "この作品から外す",
-                        onclick: () => { work.gallery.splice(i, 1); drawGallery(); updateSaveBar(); } })
-                )
-            )));
-            if (!work.gallery.length) galleryGrid.append(el("p", { class: "empty", text: "追加の写真はありません" }));
-        };
-        drawGallery();
-
         const heading = el("h2", { class: "section-heading", text: work.title || "新しい作品" });
 
         return el("div", {},
@@ -700,12 +734,10 @@
             ),
 
             el("h3", { class: "sub-heading", text: "追加の写真（作品ページに並びます）" }),
-            galleryGrid,
-            fileButton("+ 写真を追加（複数選べます）", true, async files => {
-                const paths = await addImages(work, files);
-                work.gallery.push(...paths);
-                drawGallery();
-                updateSaveBar();
+            galleryEditor(work.gallery, {
+                emptyText: "追加の写真はありません",
+                removeTitle: "この作品から外す",
+                onAdd: files => addImages(work, files)
             }),
 
             el("h3", { class: "sub-heading", text: "動画と説明" }),
@@ -804,7 +836,7 @@
             el("button", { type: "button", class: "btn", text: "+ 実験を追加", style: "margin-bottom: 20px", onclick: () => {
                 const d = new Date();
                 const date = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
-                list.unshift({ date, title: "", tags: [], description: "", video: "" });
+                list.unshift({ date, title: "", tags: [], description: "", images: [], video: "" });
                 render();
             } }),
             list.map((entry, i) => el("div", { class: "card" },
@@ -823,7 +855,15 @@
                     parse: v => v.split(/[,、]/).map(t => t.trim()).filter(Boolean)
                 }),
                 field("説明", entry, "description", { multiline: true, rows: 2 }),
-                field("YouTube の URL", entry, "video", { type: "url", placeholder: "https://www.youtube.com/watch?v=..." })
+                el("div", { class: "field" },
+                    el("label", { text: `写真（長辺${MAX_IMAGE_SIZE}pxに縮小して保存されます）` }),
+                    galleryEditor(entry.images = entry.images || [], {
+                        emptyText: "写真はありません",
+                        removeTitle: "この実験から外す",
+                        onAdd: files => addExperimentImages(entry, files)
+                    })
+                ),
+                field("YouTube の URL（なければ空欄）", entry, "video", { type: "url", placeholder: "https://www.youtube.com/watch?v=..." })
             ))
         );
     }
