@@ -619,7 +619,7 @@
 
         const list = el("div", { class: "works-list" },
             el("h2", { class: "section-heading", text: "作品" }),
-            el("p", { class: "hint", text: "上から順にトップページに並びます", style: "font-size:12px;color:#888;margin:-10px 0 10px" }),
+            el("p", { class: "hint", text: "トップでの並びは開くたびにランダムです（この順番は管理用）", style: "font-size:12px;color:#888;margin:-10px 0 10px" }),
             listItems,
             el("button", { type: "button", class: "btn", text: "+ 作品を追加", onclick: () => {
                 works.unshift({ id: "", title: "", category: "", year: String(new Date().getFullYear()), place: "",
@@ -678,7 +678,7 @@
                 field("年", work, "year", { placeholder: "2026" }),
                 field("場所", work, "place", { placeholder: "なければ空欄" })
             ),
-            field("トップでの大きさ", work, "size", { options: SIZES, hint: "すき間には後ろの小さい作品が自動で詰めて入ります。そのため並びが少し前後することがあります。" }),
+            field("トップでの大きさ", work, "size", { options: SIZES, hint: "トップでは、この大きさのまま、開くたびにランダムな順番で並びます。" }),
 
             el("h3", { class: "sub-heading", text: "メイン画像" }),
             el("div", { class: "image-field" },

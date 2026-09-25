@@ -38,140 +38,108 @@
         el.addEventListener("click", () => openWork(Number(el.dataset.index)));
     });
 
-    // ---- すき間を埋める ----
-    // CSS の dense 配置で上から詰めたあと、それでも残ったマス（主に最後の行）には
-    // となりの作品（左 → 上 → 右 → 下の順に探す）を広げて入れ、一覧がきれいな長方形で終わるようにする
+    // ---- ランダムに並べる ----
+    // 作品の大きさは変えずに、ページを開くたびに並び順をランダムに決める。
+    // いくつもの並びを試して、途中の行に穴ができないもの（余ったマスは一番下の行の右端だけ）を選ぶ
 
-    // 配置（boxes）の空いたマスに、となりの作品を広げて入れる。残った穴の数を返す
-    function growIntoGaps(boxes, rows, cols) {
-        const cells = Array.from({ length: rows }, () => Array(cols).fill(null));
-        const place = b => {
-            for (let y = b.row; y < b.row + b.h; y++) {
-                for (let x = b.col; x < b.col + b.w; x++) cells[y][x] = b;
-            }
+    // 開くたびに変わるが、同じ表示中は幅を変えても同じ並びになるよう、種を固定した乱数を使う
+    const seed = Math.floor(Math.random() * 2 ** 32);
+    function makeRandom(s) {
+        return () => {
+            s = (s + 0x6D2B79F5) | 0;
+            let t = Math.imul(s ^ (s >>> 15), 1 | s);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
         };
-        const isEmpty = (y0, y1, x0, x1) => {
-            for (let y = y0; y <= y1; y++) {
-                for (let x = x0; x <= x1; x++) {
-                    if (y < 0 || x < 0 || y >= rows || x >= cols || cells[y][x]) return false;
-                }
+    }
+
+    function shuffled(list, random) {
+        const out = [...list];
+        for (let i = out.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [out[i], out[j]] = [out[j], out[i]];
+        }
+        return out;
+    }
+
+    // 上の行から、入る場所の一番左上に置いていく
+    function pack(order, cols) {
+        const rows = [];
+        const free = (y, x, w, h) => {
+            if (x + w > cols) return false;
+            for (let yy = y; yy < y + h; yy++) {
+                for (let xx = x; xx < x + w; xx++) if (rows[yy] && rows[yy][xx]) return false;
             }
             return true;
         };
-        boxes.forEach(place);
-
-        // 左 → 上 → 右 → 下 の順に、穴へ広げられる作品を探す
-        const tryGrow = (y, x) => {
-            const left = x > 0 ? cells[y][x - 1] : null;
-            if (left && left.col + left.w === x && isEmpty(left.row, left.row + left.h - 1, x, x)) {
-                left.w++; place(left); return true;
-            }
-            const up = y > 0 ? cells[y - 1][x] : null;
-            if (up && up.row + up.h === y && isEmpty(y, y, up.col, up.col + up.w - 1)) {
-                up.h++; place(up); return true;
-            }
-            const right = x < cols - 1 ? cells[y][x + 1] : null;
-            if (right && right.col === x + 1 && isEmpty(right.row, right.row + right.h - 1, x, x)) {
-                right.col--; right.w++; place(right); return true;
-            }
-            const down = y < rows - 1 ? cells[y + 1][x] : null;
-            if (down && down.row === y + 1 && isEmpty(y, y, down.col, down.col + down.w - 1)) {
-                down.row--; down.h++; place(down); return true;
-            }
-            return false;
-        };
-
-        let changed = true;
-        while (changed) {
-            changed = false;
-            for (let y = 0; y < rows; y++) {
+        const placed = order.map(item => {
+            const w = Math.min(item.w, cols);
+            for (let y = 0; ; y++) {
                 for (let x = 0; x < cols; x++) {
-                    if (!cells[y][x] && tryGrow(y, x)) changed = true;
+                    if (!free(y, x, w, item.h)) continue;
+                    for (let yy = y; yy < y + item.h; yy++) {
+                        rows[yy] = rows[yy] || Array(cols).fill(false);
+                        for (let xx = x; xx < x + w; xx++) rows[yy][xx] = true;
+                    }
+                    return { ...item, w, row: y, col: x };
                 }
             }
-        }
-        return cells.flat().filter(c => !c).length;
-    }
-
-    function emptyCells(boxes, rows, cols) {
-        const used = new Set();
-        boxes.forEach(b => {
-            for (let y = b.row; y < b.row + b.h; y++) {
-                for (let x = b.col; x < b.col + b.w; x++) used.add(y * cols + x);
-            }
         });
-        const holes = [];
-        for (let i = 0; i < rows * cols; i++) if (!used.has(i)) holes.push({ row: Math.floor(i / cols), col: i % cols });
-        return holes;
+        // 一番下の行より上にある空きマスの数（少ないほどよい）
+        const holes = rows.slice(0, -1).flat().filter(c => !c).length;
+        // 一番下の行の空きが右端にまとまっていないマスの数（少ないほどよい）
+        const last = rows[rows.length - 1] || [];
+        const ragged = last.filter((c, x) => !c && last.slice(x + 1).some(Boolean)).length;
+        return { placed, holes, ragged, height: rows.length };
     }
 
-    const cloneBoxes = boxes => boxes.map(b => ({ ...b }));
-
-    function fillGaps() {
+    function arrange() {
         const items = [...grid.querySelectorAll(".work")];
         items.forEach(el => { el.style.gridColumn = ""; el.style.gridRow = ""; });
 
         const style = getComputedStyle(grid);
         const cols = style.gridTemplateColumns.split(" ").length;
-        const colGap = parseFloat(style.columnGap) || 0;
-        const rowGap = parseFloat(style.rowGap) || 0;
-        const rowHeight = parseFloat(style.gridAutoRows);
-        const area = grid.getBoundingClientRect();
-        const colWidth = (area.width - colGap * (cols - 1)) / cols;
-        if (!items.length || !cols || !rowHeight || !colWidth) return;
+        if (!items.length || !cols) return;
 
-        // CSS が決めた配置を「何行目・何列目から、何マス分」に読み取る
-        const initial = items.map((el, i) => {
-            const r = el.getBoundingClientRect();
+        // 大きさはCSS（size の指定とスマホ用の指定）から読み取る
+        const span = value => {
+            const m = String(value).match(/span\s+(\d+)/);
+            return m ? Number(m[1]) : 1;
+        };
+        const list = items.map((el, i) => {
+            const cs = getComputedStyle(el);
             return {
                 i,
-                col: Math.round((r.left - area.left) / (colWidth + colGap)),
-                row: Math.round((r.top - area.top) / (rowHeight + rowGap)),
-                w: Math.round((r.width + colGap) / (colWidth + colGap)),
-                h: Math.round((r.height + rowGap) / (rowHeight + rowGap))
+                w: Math.max(span(cs.gridColumnStart), span(cs.gridColumnEnd)),
+                h: Math.max(span(cs.gridRowStart), span(cs.gridRowEnd))
             };
         });
-        const rows = Math.max(...initial.map(b => b.row + b.h));
 
-        let current = cloneBoxes(initial);   // 広げる前の配置
-        let best = cloneBoxes(current);       // 広げたあとの配置
-        let bestHoles = growIntoGaps(best, rows, cols);
-
-        // 広げるだけで埋まらない穴があるときは、1×1 の作品を穴へ移してみて、
-        // 穴が減るなら採用する（減らなくなるまで繰り返す）
-        let improved = true;
-        while (bestHoles > 0 && improved) {
-            improved = false;
-            search:
-            for (const hole of emptyCells(best, rows, cols)) {
-                for (const small of current.filter(b => b.w === 1 && b.h === 1)) {
-                    const moved = cloneBoxes(current);
-                    moved[small.i].row = hole.row;
-                    moved[small.i].col = hole.col;
-                    const trial = cloneBoxes(moved);
-                    const holesLeft = growIntoGaps(trial, rows, cols);
-                    if (holesLeft < bestHoles) {
-                        current = moved;
-                        best = trial;
-                        bestHoles = holesLeft;
-                        improved = true;
-                        break search;
-                    }
-                }
-            }
+        const random = makeRandom(seed);
+        let best = null;
+        for (let attempt = 0; attempt < 300; attempt++) {
+            const result = pack(shuffled(list, random), cols);
+            const better = !best
+                || result.holes < best.holes
+                || (result.holes === best.holes && result.ragged < best.ragged)
+                || (result.holes === best.holes && result.ragged === best.ragged && result.height < best.height);
+            if (better) best = result;
+            if (best.holes === 0 && best.ragged === 0) break;
         }
 
-        best.forEach(b => {
+        best.placed.forEach(b => {
             items[b.i].style.gridColumn = `${b.col + 1} / span ${b.w}`;
             items[b.i].style.gridRow = `${b.row + 1} / span ${b.h}`;
         });
     }
-    fillGaps();
 
+    arrange();
+
+    // 幅が変わったら並べ直す（乱数の種は同じなので、列の数が同じなら並びも変わらない）
     let resizeTimer;
     window.addEventListener("resize", () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(fillGaps, 150);
+        resizeTimer = setTimeout(arrange, 150);
     });
 
     // ---- 作品詳細 ----
