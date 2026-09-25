@@ -29,7 +29,7 @@ window.WORKS = [
         image: "images/works/apple/1.jpg",
         gallery: [],
         video: "https://www.youtube.com/watch?v=5UhIt97ReNI&pp=0gcJCS8MAYcqIYzv",
-        description: "testwa------------------"
+        description: ""
     },
     {
         id: "hamon",
