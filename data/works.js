@@ -20,6 +20,18 @@
 
 window.WORKS = [
     {
+        id: "apple",
+        title: "Apple",
+        category: "movie",
+        year: "2026",
+        place: "",
+        size: "small",
+        image: "images/works/apple/1.jpg",
+        gallery: [],
+        video: "https://www.youtube.com/watch?v=5UhIt97ReNI&pp=0gcJCS8MAYcqIYzv",
+        description: ""
+    },
+    {
         id: "hamon",
         title: "hamon.exe",
         category: "cg",
