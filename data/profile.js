@@ -25,7 +25,7 @@ window.PROFILE = {
     name: "堤 廉太郎",
     nameEn: "RENTARO TSUTSUMI",
     birthday: "2007-12-18",
-    affiliation: "多摩美術大学 1年生",
+    affiliation: "多摩美術大学 情報デザイン学科メディア芸術コース 1年生",
     social: [
         { label: "Instagram", url: "https://www.instagram.com/ren_atmo" }
     ],
