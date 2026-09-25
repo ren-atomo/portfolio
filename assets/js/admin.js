@@ -11,7 +11,8 @@
     const FILES = {
         works:       { path: "data/works.js",       global: "WORKS" },
         profile:     { path: "data/profile.js",     global: "PROFILE" },
-        experiments: { path: "data/experiments.js", global: "EXPERIMENTS" }
+        experiments: { path: "data/experiments.js", global: "EXPERIMENTS" },
+        philosophy:  { path: "data/philosophy.js",  global: "PHILOSOPHY" }
     };
 
     const SIZES = [
@@ -238,7 +239,16 @@
             tags: (e.tags || []).map(t => str(t).trim()).filter(Boolean),
             description: str(e.description),
             video: str(e.video).trim()
-        }))
+        })),
+
+        philosophy: p => ({
+            title: str(p.title),
+            sections: (p.sections || []).map(sec => ({
+                heading: str(sec.heading),
+                emphasis: Boolean(sec.emphasis),
+                body: str(sec.body)
+            }))
+        })
     };
 
     function cleanLink(l) {
@@ -406,7 +416,7 @@
     }
 
     function defaultCommitMessage(files, images) {
-        const names = { works: "作品", profile: "プロフィール", experiments: "実験ノート" };
+        const names = { works: "作品", profile: "プロフィール", experiments: "実験ノート", philosophy: "思想" };
         const parts = files.map(f => names[f.key]);
         if (images.length) parts.push(`写真${images.length}枚`);
         return `${parts.join("・")}を更新（管理ページから）`;
@@ -819,6 +829,44 @@
     }
 
     // ------------------------------------------------------------
+    //  思想タブ
+    // ------------------------------------------------------------
+
+    function renderPhilosophy() {
+        const p = state.data.philosophy;
+        p.sections = p.sections || [];
+
+        return el("div", { style: "max-width: 820px" },
+            el("h2", { class: "section-heading", text: "思想" }),
+            field("ページの見出し", p, "title"),
+            el("div", { class: "message" },
+                "本文の書き方：空行で段落を分けます。段落の中の改行はそのまま改行になります。\n",
+                "「・」で始まる行だけの段落は箇条書き、「>」で始まる行だけの段落は引用（グレーの枠）になります。"
+            ),
+            p.sections.map((sec, i) => el("div", { class: "card" },
+                el("div", { class: "card-head" },
+                    el("span", { class: "card-title", text: sec.heading || "（見出しなしの節）" }),
+                    orderButtons(p.sections, i, () => { render(); updateSaveBar(); },
+                        { removeConfirm: `「${sec.heading || "この節"}」を削除します。よろしいですか？` })
+                ),
+                field("見出し（なくてもよい）", sec, "heading"),
+                el("label", { class: "checkbox" },
+                    el("input", { type: "checkbox", checked: Boolean(sec.emphasis), onchange: e => {
+                        sec.emphasis = e.target.checked;
+                        updateSaveBar();
+                    } }),
+                    "この節の段落を太字で表示する"
+                ),
+                field("本文", sec, "body", { multiline: true, rows: Math.min(24, Math.max(6, String(sec.body || "").split("\n").length + 2)) })
+            )),
+            el("button", { type: "button", class: "btn", text: "+ 節を追加", onclick: () => {
+                p.sections.push({ heading: "", emphasis: false, body: "" });
+                render();
+            } })
+        );
+    }
+
+    // ------------------------------------------------------------
     //  接続設定タブ
     // ------------------------------------------------------------
 
@@ -891,7 +939,7 @@
         if (!state.connected) state.tab = "settings";
         tabs.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.tab === state.tab));
 
-        const views = { works: renderWorks, profile: renderProfile, experiments: renderExperiments, settings: renderSettings };
+        const views = { works: renderWorks, profile: renderProfile, experiments: renderExperiments, philosophy: renderPhilosophy, settings: renderSettings };
         main.replaceChildren(views[state.tab]());
         updateSaveBar();
     }
